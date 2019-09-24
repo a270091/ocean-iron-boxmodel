@@ -189,7 +189,7 @@ nboxdata = zeros(12,1);
 feboxdata = NaN*ones(12,1300);
 
 nstations = length(lon_fe);
-for l = 1:nstations,
+for l = 1:nstations
     ix = ceil(lon_fe(l));
     if ix==0, ix = 360; end
     jy = ceil(lat_fe(l))+90;
@@ -202,12 +202,12 @@ for l = 1:nstations,
     depthprof = depthprof(ii);
     feprof = feprof(ii);
 %    fprintf('lon %f lat %f ndata %i\n', lon_fe(l), lat_fe(l),length(feprof))
-    for k=1:length(feprof),
+    for k=1:length(feprof)
         % for each sample deoth find, n which WOA grid point it belongs
         sample_depth = depthprof(k);
         kk = sum(sample_depth>depth_bnds(1:33));
         whichbox = box_indices(ix,jy,kk);
-        if (whichbox>0),
+        if (whichbox>0)
             nboxdata(whichbox) = nboxdata(whichbox)+1;
             feboxdata(whichbox,nboxdata(whichbox)) = feprof(k);
         end
@@ -216,16 +216,27 @@ end
 
 % now calculate statistics (mean, median, quartiles, for each of the boxes
 
-for k=1:12,
+femedian=zeros(12,1);
+fe1q = femedian;
+fe3q = femedian;
+for k=1:12
     ndata = nboxdata(k);
     fedata = feboxdata(k,1:ndata);
-    femedian = median(fedata);
-    felower = fedata(fedata<=femedian);
-    feupper = fedata(fedata>=femedian);
-    fe1q = median(felower);
-    fe3q = median(feupper);
-    fprintf('Box %2i: N=%4i, 1stQ=%5.3f Median=%5.3f 3rdQ=%5.3f\n',k,ndata,fe1q,femedian,fe3q);
+    femedian(k) = median(fedata);
+    femin(k)    = min(fedata);
+    femax(k)    = max(fedata);
+    felower = fedata(fedata<=femedian(k));
+    feupper = fedata(fedata>=femedian(k));
+    fe1q(k) = median(felower);
+    fe3q(k) = median(feupper);
+    fprintf('Box %2i: N=%4i, 1stQ=%5.3f Median=%5.3f 3rdQ=%5.3f\n',...
+        k,ndata,fe1q(k),femedian(k),fe3q(k));
 end
+
+% and now do a plot
+myboxplot(femedian,fe1q,fe3q,femin,femax)
+
+
 
 return
 
