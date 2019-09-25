@@ -15,7 +15,7 @@ conc_init = [po4_init;dop_init;fe_init];
 
 % integrate
 tspan = [0:50:3000];
-conc = ode23(@boxmodel_dgl_po4dopfe_export, tspan, conc_init);
+conc = ode23s(@boxmodel_dgl_po4dopfe_export, tspan, conc_init);
 
 % plot
 plot(conc.x,conc.y(1:12,:));
@@ -27,10 +27,16 @@ plot(conc.x,conc.y(25:36,:));
 % some diagnostics
 totpo4 = params.volume' * conc.y(1:12,:);
 totfe = params.volume' * conc.y(25:36,:);
+c_export = export * params.redfield_c2p * 12 * 1.0e-18;
 
 for k=1:12
   fprintf('Box %i: %s\n',k,params.long_names{k});
   fprintf('  DFe: %5.2f, Fe: %5.3f\n',conc.y(k+24,end), feprime(k));
+  fprintf('  PO4: %5.2f\n',conc.y(k,end));
+  fprintf('  DOP: %5.2f\n',conc.y(k+12,end));
+  if k<=5,
+    fprintf('  Export: %5.2f PgC \n', c_export(k));
+  end
   fprintf('\n');
 end
 

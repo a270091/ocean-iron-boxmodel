@@ -29,7 +29,7 @@ dopremin = params.dopremin;
 uptake = zeros(12,1);
 uptake(1:5) = params.mumax .* po4(1:5) .* (dfe(1:5) ./ ...
     (dfe(1:5) + params.kFe)); 
-export = uptake(1:5)* (1 - dopfrac) .* params.volume(1:5);
+export = uptake(1:5)* (1 - dopfrac) .* volume(1:5);
 remin  = (params.reminfrac * export) ./ volume;
 
 % iron parameters
@@ -45,8 +45,8 @@ p = lig - dfe + 1/klig;
 q = dfe/klig;
 feprime = -p/2 + sqrt(q + (p/2).^2);
 
-uptake = zeros(12,1);
-uptake(1:5) = export ./ volume(1:5);
+%uptake = zeros(12,1);
+%uptake(1:5) = export ./ volume(1:5);
 
 % calculate the rate of change from advection, biological uptake and
 % remineralization 

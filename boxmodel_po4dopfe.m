@@ -14,7 +14,7 @@ conc_init = [po4_init;dop_init;fe_init];
 
 % integrate
 tspan = [0:50:3000];
-conc = ode23(@boxmodel_dgl_po4dopfe, tspan, conc_init);
+conc = ode23s(@boxmodel_dgl_po4dopfe, tspan, conc_init);
 
 % plot
 plot(conc.x,conc.y(1:12,:));
