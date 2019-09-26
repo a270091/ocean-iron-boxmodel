@@ -39,6 +39,10 @@ klig   = params.klig; %
 kscav  = params.kscav;
 dust   = params.dust;
 sol    = params.dustsol;
+hydro  = params.hydrothermal;
+hydfac = params.hydro_fac;
+sedfe  = params.sediment_fe;
+sedfac = params.sed_fac;
 
 % calculate free iron 
 p = lig - dfe + 1/klig;
@@ -53,7 +57,8 @@ feprime = -p/2 + sqrt(q + (p/2).^2);
 dpo4dt = advect*po4 - uptake + remin + dopremin*dop;
 ddopdt = advect*dop + dopfrac*uptake - dopremin*dop;
 ddfedt = advect*dfe - rfe2p*uptake + rfe2p*remin  ...
-    + rfe2p*dopremin*dop - kscav*feprime + sol*dust./volume;
+    + rfe2p*dopremin*dop - kscav*feprime + sol*dust./volume + ...
+	  hydfac*hydro + sedfac*sedfe;
 
 % save individual terms on the rhs of the Fe equation for analysis
 rhs.advect = advect*dfe;
@@ -61,6 +66,8 @@ rhs.uptake = -rfe2p*uptake;
 rhs.remin  = rfe2p*remin;
 rhs.scav   = -kscav*feprime;
 rhs.dust   = sol*dust./volume;
+rhs.hydro  = hydfac*hydro;
+rhs.sedfe  = sedfac*sedfe;
 
 % in the end, glue all rates of change into one long vector
 dydt = [dpo4dt; ddopdt; ddfedt];

@@ -226,6 +226,7 @@ params.hydrothermal(9) = 7.87e-04;
 params.hydrothermal(10) = 4.21e-04;
 params.hydrothermal(11) = 7.75e-04;
 params.hydrothermal(12) = 4.36e-04;
+params.hydro_fac = 1.0
 
 % sedimentary  iron flux, already converted into a volumentric concentration
 % rate of change (in nmol/L/yr). Values have been estimated from the sediment
@@ -246,6 +247,7 @@ params.sediment_fe(9) = 1.71e-02;
 params.sediment_fe(10) = 5.84e-03;
 params.sediment_fe(11) = 1.97e-03;
 params.sediment_fe(12) = 2.33e-03;
+params.sed_fac = 0.0;
 
 return
 
