@@ -18,10 +18,11 @@ tspan = [0:50:3000];
 conc = ode23s(@boxmodel_dgl_po4dopfe_export, tspan, conc_init);
 
 % plot
+figure(1)
 plot(conc.x,conc.y(1:12,:));
-figure
+figure(2)
 plot(conc.x,conc.y(13:24,:));
-figure
+figure(3)
 plot(conc.x,conc.y(25:36,:));
 
 % some diagnostics
@@ -40,4 +41,11 @@ for k=1:12
   fprintf('\n');
 end
 
+% read in iron data and make a plot of data with observations and model
+figure(4)
+sort_fe_data_into_boxes;
+hold on
+h = plot(conc.y(25:36,end),'kx');
+set(h,'markerSize',10, 'LineWidth',2);
+print('fe_vs_data_po4dopdfe_nosed.png','-dpng');
 
