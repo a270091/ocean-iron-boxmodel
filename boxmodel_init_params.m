@@ -91,10 +91,30 @@ mix_matrix = zeros(7,3);
 mix_matrix(1,:) = [6, 1, 31.59];  % 40
 mix_matrix(2,:) = [6, 2, 38.13];  % 40
 mix_matrix(3,:) = [7, 4, 27.04];  % 17
+mix_matrix(3,:) = [7, 4, 50];  % 17
 mix_matrix(4,:) = [10, 5, 12.03]; % 10
 mix_matrix(5,:) = [8, 3, 4.12];   % 5
 mix_matrix(6,:) = [9, 3, 0.0];    % 20
 mix_matrix(7,:) = [10, 3, 23.85]; % 40
+
+mix_matrix(1,:) = [6, 1, 40];  % 40
+mix_matrix(2,:) = [6, 2, 7];  % 40
+mix_matrix(3,:) = [7, 4, 50];  % 17
+mix_matrix(4,:) = [7, 4, 25];  % 17
+mix_matrix(5,:) = [8, 3, 8];   % 5
+mix_matrix(6,:) = [9, 3, 0];    % 20
+mix_matrix(7,:) = [10, 3, 40]; % 40
+
+%------------------------------------------------------------------------
+% save the advection and mixing matrices, so they can be changed
+% more easily in one of the cost functions for optimization
+%------------------------------------------------------------------------
+params.aux.mix_matrix = mix_matrix;
+params.aux.adv_matrix = adv_matrix;
+
+%------------------------------------------------------------------------
+% construct physical transport matrix from advection and mixing
+%------------------------------------------------------------------------
 
 tr = zeros(12,12);
 for k=1:21,
@@ -226,7 +246,7 @@ params.hydrothermal(9) = 7.87e-04;
 params.hydrothermal(10) = 4.21e-04;
 params.hydrothermal(11) = 7.75e-04;
 params.hydrothermal(12) = 4.36e-04;
-params.hydro_fac = 1.0
+params.hydro_fac = 1.0;
 
 % sedimentary  iron flux, already converted into a volumentric concentration
 % rate of change (in nmol/L/yr). Values have been estimated from the sediment
