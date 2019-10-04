@@ -18,10 +18,10 @@ tspan = [0:50:3000];
 conc = ode23s(@boxmodel_dgl_po4fe_export, tspan, conc_init);
 
 % plot
-figure(1)
-plot(conc.x,conc.y(1:12,:));
-figure(2)
-plot(conc.x,conc.y(13:24,:));
+%figure(1)
+%plot(conc.x,conc.y(1:12,:));
+%figure(2)
+%plot(conc.x,conc.y(13:24,:));
 
 % some diagnostics
 totpo4 = params.volume' * conc.y(1:12,:);
@@ -38,12 +38,23 @@ for k=1:12
   fprintf('\n');
 end
 
+% plot phosphorus for each box, with data
+figure
+h = plot(conc.y(1:12,end),'kx');
+set(h,'MarkerSize',10, 'LineWidth',2);
+hold on
+hd = plot(params.po4init,'rx');
+set(hd,'MarkerSize',10, 'LineWidth',2);
+ylabel('PO_4 [\mumol L^{-1}]');
+set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
+set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 3.5]);
+
 % read in iron data and make a plot of data with observations and model
-figure(3)
+figure
 sort_fe_data_into_boxes;
 hold on
 h = plot(conc.y(13:24,end),'kx');
-set(h,'markerSize',10, 'LineWidth',2);
-print('fe_vs_data_po4dfe.png','-dpng');
-
-
+set(h,'MarkerSize',10, 'LineWidth',2);
+ylabel('dFe [nmol L^{-1}]');
+set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
+set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
