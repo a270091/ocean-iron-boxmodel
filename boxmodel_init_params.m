@@ -192,18 +192,26 @@ params.reminfrac(6,2) = 0.85;
 params.reminfrac(8,2) = 0.13;
 params.reminfrac(11,2)= 0.02;
 
-params.reminfrac(8,3) = 0.54;
-params.reminfrac(9,3) = 0.06;
-params.reminfrac(10,3)= 0.36;
+%params.reminfrac(8,3) = 0.54;
+%params.reminfrac(9,3) = 0.06;
+%params.reminfrac(10,3)= 0.36;
+%params.reminfrac(11,3)= 0.02;
+%params.reminfrac(12,3)= 0.02;
+params.reminfrac(8,3) = 0.5;
+params.reminfrac(9,3) = 0.2;
+params.reminfrac(10,3)= 0.26;
 params.reminfrac(11,3)= 0.02;
 params.reminfrac(12,3)= 0.02;
 
-params.reminfrac(7,4) = 0.85;
-params.reminfrac(10,4)= 0.13;
+% params.reminfrac(7,4) = 0.85;
+% params.reminfrac(10,4)= 0.13;
+% params.reminfrac(12,4)= 0.02;
+params.reminfrac(7,4) = 0.74;
+params.reminfrac(10,4)= 0.24;
 params.reminfrac(12,4)= 0.02;
 
-params.reminfrac(10,5)= 0.97;
-params.reminfrac(12,5)= 0.03;
+params.reminfrac(10,5)= 0.98;
+params.reminfrac(12,5)= 0.02;
 
 %------------------------------------------------------------------------
 % now parameters that are relevant for the iron cycle
@@ -268,6 +276,10 @@ params.sediment_fe(10) = 5.84e-03;
 params.sediment_fe(11) = 1.97e-03;
 params.sediment_fe(12) = 2.33e-03;
 params.sed_fac = 0.0;
+
+% now parameters important for ligand cycling
+params.rlig2p = 5.0e-5 * 116; % Lig to P ratio, calc. from Lig:C ratio and Redfield C:P
+params.ligrem = 1.0e-3;       % Lig remineralization rate (1/yr)
 
 return
 

@@ -1,13 +1,13 @@
 % optimizes export production to fit the PO4 distribution in the boxes
 
-pvec_ini(1) = 0.13;
+pvec_ini(1) = 0.54;
 
 % options = optimset('Display','iter','TolX',0.1,'TolFun',0.02);
 [f_ini,po4_init0,po4_end0] = costf_remin_boxmodel_po4dopfe_export(pvec_ini);
 %pvec = fminsearch(@costf_mix_boxmodel_po4, pvec_ini,options);
 
 pvec = pvec_ini;
-reminmin = 0.0;
+reminmin = 0.2;
 reminmax = 0.6;
 lmax = 31;
 for l=1:lmax
@@ -20,11 +20,12 @@ end
 figure()
 plot(reminvec,c)
 [cmin,imin] = min(c);
-return
 
 % make plot of PO4 vs data for intial and best solution
 pvec(1) = reminvec(imin);
 [f_end,po4_init,po4_end] = costf_remin_boxmodel_po4dopfe_export(pvec);
+
+fprintf('optimized remin: %5.3f\n', pvec)
 
 figure()
 hh = plot(po4_init, po4_end,'x');

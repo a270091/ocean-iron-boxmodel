@@ -6,9 +6,11 @@ boxmodel_init_params()
 
 if (nargin>0) 
   remfrac = params.reminfrac;
-  remfrac(10,4) = pvec(1);
-  remfrac(12,4) = 0.06;
-  remfrac(7,4) = 1.0 - remfrac(12,4) - pvec(1);
+  remfrac(8,3) = pvec(1);
+  remfrac(9,3) = 0.2;
+  remfrac(10,3)= 1 - pvec(1) - 0.24;
+  remfrac(11,3)= 0.02;
+  remfrac(12,3)= 0.02;
   params.reminfrac = remfrac;
 end
 
