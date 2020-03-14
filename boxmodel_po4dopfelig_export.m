@@ -11,11 +11,12 @@ boxmodel_init_params()
 po4_init = params.po4init;
 dop_init = zeros(size(po4_init));
 fe_init = 0.6 + zeros(size(po4_init));
-conc_init = [po4_init;dop_init;fe_init];
+lig_init = 1.0 + zeros(size(po4_init));
+conc_init = [po4_init;dop_init;fe_init;lig_init];
 
 % integrate
 tspan = (0:50:3000);
-conc = ode23s(@boxmodel_dgl_po4dopfe_export, tspan, conc_init);
+conc = ode23s(@boxmodel_dgl_po4dopfelig_export, tspan, conc_init);
 
 % plots of time development
 
@@ -25,6 +26,8 @@ figure(2)
 plot(conc.x,conc.y(13:24,:));
 figure(3)
 plot(conc.x,conc.y(25:36,:));
+figure(4)
+plot(conc.x,conc.y(37:48,:));
 
 % some diagnostics
 totpo4 = params.volume' * conc.y(1:12,:);
@@ -36,6 +39,7 @@ for k=1:12
   fprintf('  DFe: %5.2f, Fe: %5.3f\n',conc.y(k+24,end), feprime(k));
   fprintf('  PO4: %5.2f, obs. PO4: %5.2f\n',conc.y(k,end),params.po4init(k));
   fprintf('  DOP: %5.2f\n',conc.y(k+12,end));
+  fprintf('  Lig: %5.2f\n',conc.y(k+36,end));
   if k<=5,
     fprintf('  Export: %5.2f PgC \n', c_export(k));
   end

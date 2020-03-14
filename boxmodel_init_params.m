@@ -277,9 +277,13 @@ params.sediment_fe(11) = 1.97e-03;
 params.sediment_fe(12) = 2.33e-03;
 params.sed_fac = 0.0;
 
+%------------------------------------------------------------------------
 % now parameters important for ligand cycling
-params.rlig2p = 5.0e-5 * 116; % Lig to P ratio, calc. from Lig:C ratio and Redfield C:P
-params.ligrem = 1.0e-3;       % Lig remineralization rate (1/yr)
+%------------------------------------------------------------------------
+params.rlig2p  = 5.0e-5 * 116; % Lig to P ratio in POC remineralization (Lig:C ratio * Redfield C:P)
+params.rlig2p2 = 5.0e-4 * 116; % Lig to P ratio in uptake (Lig:C ratio * Redfield C:P)
+params.ligrem  = 0.5e-3;       % Lig remineralization rate (1/yr)
+params.ligfac  = 100.0; % at the surface, remineralization is stronger by this factor
 
 return
 

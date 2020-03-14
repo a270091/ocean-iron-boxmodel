@@ -45,8 +45,10 @@ sedfe  = params.sediment_fe;
 sedfac = params.sed_fac;
 
 % ligand parameters
-rlig2p = params.rlig2p;
-ligrem = params.ligrem;
+rlig2p  = params.rlig2p;
+rlig2p2 = params.rlig2p2;
+ligrem  = params.ligrem;
+surffac = params.ligfac;
 
 % calculate free iron 
 p = lig - dfe + 1/klig;
@@ -60,7 +62,9 @@ ddopdt = advect*dop + dopfrac*uptake - dopremin*dop;
 ddfedt = advect*dfe - rfe2p*uptake + rfe2p*remin  ...
     + rfe2p*dopremin*dop - kscav*feprime + sol*dust./volume + ...
 	  hydfac*hydro + sedfac*sedfe;
-dligdt = advect*lig + rlig2p*remin - ligrem*lig; 
+ligremin = ligrem*lig;
+ligremin(1:5) = ligremin(1:5)*surffac;
+dligdt = advect*lig + rlig2p*remin + rlig2p2*uptake - ligremin; 
 
 % save individual terms on the rhs of the Fe equation for analysis
 rhs.advect = advect*dfe;
@@ -72,6 +76,6 @@ rhs.hydro  = hydfac*hydro;
 rhs.sedfe  = sedfac*sedfe;
 
 % in the end, glue all rates of change into one long vector
-dydt = [dpo4dt; ddopdt; ddfedt];
+dydt = [dpo4dt; ddopdt; ddfedt; dligdt];
 
 return
