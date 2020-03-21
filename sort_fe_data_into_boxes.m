@@ -235,7 +235,7 @@ for k=1:12
 end
 
 % and now do a plot
-% myboxplot(femedian,fe1q,fe3q,femin,femax)
+myboxplot(femedian,fe1q,fe3q,femin,femax)
 
 
 

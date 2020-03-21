@@ -15,7 +15,7 @@ lig_init = 1.0 + zeros(size(po4_init));
 conc_init = [po4_init;dop_init;fe_init;lig_init];
 
 % integrate
-tspan = (0:50:3000);
+tspan = (0:50:5000);
 conc = ode23s(@boxmodel_dgl_po4dopfelig_export, tspan, conc_init);
 
 % plots of time development

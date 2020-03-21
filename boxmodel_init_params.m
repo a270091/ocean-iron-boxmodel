@@ -227,9 +227,9 @@ params.kscav  = 1/50;   % unit: 1/year
 % iron flux, solubility has to be taken into account separately. 
 params.dust   = zeros(12,1);
 params.dust(1) = 7.083715e+15;
-params.dust(2) = 5.312438e+16;
+params.dust(2) = 5.312438e+16*0.25;
 params.dust(3) = 1.914294e+16;
-params.dust(4) = 6.325368e+16;
+params.dust(4) = 6.325368e+16*0.5;
 params.dust(5) = 1.063543e+16;
 
 params.dustsol = 0.01;
@@ -275,12 +275,12 @@ params.sediment_fe(9) = 1.71e-02;
 params.sediment_fe(10) = 5.84e-03;
 params.sediment_fe(11) = 1.97e-03;
 params.sediment_fe(12) = 2.33e-03;
-params.sed_fac = 0.0;
+params.sed_fac = 0.05;
 
 %------------------------------------------------------------------------
 % now parameters important for ligand cycling
 %------------------------------------------------------------------------
-params.rlig2p  = 5.0e-5 * 116; % Lig to P ratio in POC remineralization (Lig:C ratio * Redfield C:P)
+params.rlig2p  = 2.5e-4 * 116; % Lig to P ratio in POC remineralization (Lig:C ratio * Redfield C:P)
 params.rlig2p2 = 5.0e-4 * 116; % Lig to P ratio in uptake (Lig:C ratio * Redfield C:P)
 params.ligrem  = 0.5e-3;       % Lig remineralization rate (1/yr)
 params.ligfac  = 100.0; % at the surface, remineralization is stronger by this factor
