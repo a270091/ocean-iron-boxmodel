@@ -19,12 +19,12 @@ conc = ode23s(@boxmodel_dgl_po4dopfe_export, tspan, conc_init);
 
 % plots of time development
 
-figure(1)
-plot(conc.x,conc.y(1:12,:));
-figure(2)
-plot(conc.x,conc.y(13:24,:));
-figure(3)
-plot(conc.x,conc.y(25:36,:));
+%figure(1)
+%plot(conc.x,conc.y(1:12,:));
+%figure(2)
+%plot(conc.x,conc.y(13:24,:));
+%figure(3)
+%plot(conc.x,conc.y(25:36,:));
 
 % some diagnostics
 totpo4 = params.volume' * conc.y(1:12,:);
@@ -46,20 +46,31 @@ do_plot=1;
 
 if (do_plot),
 % plot phosphorus vs data
+figure(1)
+po4_end = conc.y(1:12,end);
+hh = plot(po4_init, po4_end,'x');
+hold on 
+set(hh,'LineWidth',2,'MarkerSize',12,'Color',[0 0.6 0.3]);
+set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',12);
+xlabel('WOA-derived PO_4');
+ylabel('model PO_4');
+yl = get(gca,'YLim');
+hd = plot(yl,yl,'k');
+%print('PO4_boxmodel_po4dopfe_sed.png','-dpng')
 
 % plot phosphorus for each box, with data
-figure
-h = plot(conc.y(1:12,end),'kx');
-set(h,'MarkerSize',10, 'LineWidth',2);
-hold on
-hd = plot(params.po4init,'rx');
-set(hd,'MarkerSize',10, 'LineWidth',2);
-ylabel('PO_4 [\mumol L^{-1}]');
-set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
-set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 3.5]);
+%figure
+%h = plot(conc.y(1:12,end),'kx');
+%set(h,'MarkerSize',10, 'LineWidth',2);
+%hold on
+%hd = plot(params.po4init,'rx');
+%set(hd,'MarkerSize',10, 'LineWidth',2);
+%ylabel('PO_4 [\mumol L^{-1}]');
+%set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
+%set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 3.5]);
 
 % read in iron data and make a plot of data with observations and model
-figure
+figure(2)
 sort_fe_data_into_boxes;
 hold on
 h = plot(conc.y(25:36,end),'kx');
@@ -67,6 +78,6 @@ set(h,'MarkerSize',10, 'LineWidth',2);
 ylabel('dFe [nmol L^{-1}]');
 set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
 set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
-% print('fe_vs_data_po4dopdfe_nosed.png','-dpng');
+%print('fe_vs_data_po4dopdfe_sed.png','-dpng');
 
 end
