@@ -41,7 +41,7 @@ c_export_run0 = export * params.redfield_c2p * 12 * 1.0e-18;
 % would change. In this case we change total dust deposition
 %---------------------------------------------------------------------------------
 
-params.dust = params.dust*1.1; % increase total dust by 10 percent
+params.dust = params.dust*1.5; % increase total dust by XX percent
 
 %---------------------------------------------------------------------------------
 % run1: box model, with ligands kept fixed at distributions from run0,
@@ -71,16 +71,14 @@ conc = ode23s(@boxmodel_dgl_po4dopfelig_export, tspan, conc_init);
 conc_final_run2 = conc.y(:,end);
 c_export_run2 = export * params.redfield_c2p * 12 * 1.0e-18;
 
-return
-
 for k=1:12
   fprintf('Box %i: %s\n',k,params.long_names{k});
-  fprintf('  DFe: %5.2f, Fe: %5.3f\n',conc.y(k+24,end), feprime(k));
-  fprintf('  PO4: %5.2f, obs. PO4: %5.2f\n',conc.y(k,end),params.po4init(k));
-  fprintf('  DOP: %5.2f\n',conc.y(k+12,end));
-  fprintf('  Lig: %5.2f\n',conc.y(k+36,end));
+  fprintf('  DFe: %5.2f %5.2f %5.2f\n', conc_final_run0(k+24), conc_final_run1(k+24), conc_final_run2(k+24));
+  fprintf('  PO4: %5.2f %5.2f %5.2f\n', conc_final_run0(k), conc_final_run1(k), conc_final_run2(k));
+  fprintf('  DOP: %5.2f %5.2f %5.2f\n', conc_final_run0(k+12), conc_final_run1(k+12), conc_final_run2(k+12));
+  fprintf('  Lig: %5.2f %5.2f %5.2f\n', conc_final_run0(k+36), ligfix(k), conc_final_run2(k+36));
   if k<=5,
-    fprintf('  Export: %5.2f PgC \n', c_export(k));
+    fprintf('  Export: %5.2f %5.2f %5.2f PgC \n', c_export_run0(k), c_export_run1(k), c_export_run2(k));
   end
   fprintf('\n');
 end
