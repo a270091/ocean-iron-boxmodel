@@ -119,6 +119,12 @@ set(h2,'LineWidth',2)
 set(gca,'FontSize',12)
 xlabel('change in total dust (%)')
 ylabel('total export production (PgC yr^{-1})')
+xl  = get(gca,'XLim');
+yl  = get(gca,'YLim');
+xpos = xl(1) + 0.85*(xl(2) - xl(1));
+ypos = yl(1) + 0.1 *(yl(2) - yl(1));
+ht = text(xpos,ypos,'d');
+set(ht,'Fontweight','b','FontSize',30)
 print('feedback_dust_export.png','-dpng')
 
 figure(2)
@@ -130,6 +136,12 @@ set(h2,'LineWidth',2)
 set(gca,'FontSize',12)
 xlabel('change in total dust (%)')
 ylabel('global average surface dFe (nmol L^{-1})')
+xl  = get(gca,'XLim');
+yl  = get(gca,'YLim');
+xpos = xl(1) + 0.85*(xl(2) - xl(1));
+ypos = yl(1) + 0.1 *(yl(2) - yl(1));
+ht = text(xpos,ypos,'b');
+set(ht,'Fontweight','b','FontSize',30)
 print('feedback_dust_surf_fe.png','-dpng')
 
 figure(3)
@@ -141,6 +153,12 @@ set(h2,'LineWidth',2)
 set(gca,'FontSize',12)
 xlabel('change in total dust (%)')
 ylabel('global average dFe (nmol L^{-1})')
+xl  = get(gca,'XLim');
+yl  = get(gca,'YLim');
+xpos = xl(1) + 0.85*(xl(2) - xl(1));
+ypos = yl(1) + 0.1 *(yl(2) - yl(1));
+ht = text(xpos,ypos,'a');
+set(ht,'Fontweight','b','FontSize',30)
 print('feedback_dust_ave_fe.png','-dpng')
 
 figure(4)
@@ -152,5 +170,11 @@ set(h2,'LineWidth',2)
 set(gca,'FontSize',12)
 xlabel('change in total dust (%)')
 ylabel('Southern Ocean dFe (nmol L^{-1})')
+xl  = get(gca,'XLim');
+yl  = get(gca,'YLim');
+xpos = xl(1) + 0.85*(xl(2) - xl(1));
+ypos = yl(1) + 0.1 *(yl(2) - yl(1));
+ht = text(xpos,ypos,'c');
+set(ht,'Fontweight','b','FontSize',30)
 print('feedback_dust_SO_fe.png','-dpng')
 
