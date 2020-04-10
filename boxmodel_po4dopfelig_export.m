@@ -41,10 +41,31 @@ for k=1:12
   fprintf('  DOP: %5.2f\n',conc.y(k+12,end));
   fprintf('  Lig: %5.2f\n',conc.y(k+36,end));
   if k<=5,
-    fprintf('  Export: %5.2f PgC \n', c_export(k));
+    fprintf('  Export: %5.2f PgC/yr \n', c_export(k));
   end
   fprintf('\n');
 end
+
+% calculate some global numbers and print them
+
+dfe_av = sum( conc.y(25:36,end) .* params.volume ) / sum(params.volume);
+dfe_tot = sum( conc.y(25:36,end) .* params.volume ) * 1.0e-6; 
+dust   = params.dust;
+sol    = params.dustsol;
+dust_fe_sol = sum( sol*dust ) * 1.0e-6;
+sedfe  = params.sediment_fe;
+sedfac = params.sed_fac;
+sed_fe_sol = sum(sedfac * sedfe .* params.volume ) * 1.0e-6;
+hydro  = params.hydrothermal;
+hydfac = params.hydro_fac;
+hyd_fe_sol = sum(hydfac * hydro .* params.volume ) * 1.0e-6;
+residence_time = dfe_tot / (dust_fe_sol + sed_fe_sol + hyd_fe_sol);
+fprintf('Total export: %5.2f PgC/yr \n', sum(c_export));
+fprintf('Average dFe concentration: %5.2f nmol/L \n',dfe_av);
+fprintf('Dust iron input: %8.2e mol/yr \n',dust_fe_sol);
+fprintf('Sediment iron input: %8.2e mol/yr \n',sed_fe_sol);
+fprintf('Hydrothermal iron input: %8.2e mol/yr \n',hyd_fe_sol);
+fprintf('Residence time: %6.2f yr \n',residence_time);
 
 do_plot=1;
 

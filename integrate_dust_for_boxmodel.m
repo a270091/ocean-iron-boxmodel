@@ -142,5 +142,11 @@ totdust = zeros(5,1);
 for k = 1:5,
   ii = find(boxnumbers_dust==k);
   totdust(k) = sum( rA(ii) .* dustflux(ii) );
-  fprintf('flux into box %i: %12.6e \n',k,totdust(k));
+  fprintf('flux into box %i: %12.6e micromol/yr \n',k,totdust(k));
 end
+ii = find(boxnumbers_dust==0);
+dust_on_land = sum( rA(ii) .* dustflux(ii) );
+fprintf('total flux onto land:  %12.6e micromol/yr \n',dust_on_land);
+fprintf('total flux into ocean: %12.6e micromol/yr \n',sum(totdust));
+
+
