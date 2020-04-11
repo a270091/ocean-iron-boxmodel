@@ -52,15 +52,16 @@ ligrem  = params.ligrem;
 surffac = params.ligfac;
 
 % calculate free iron 
-This needs to be changed!!!
+% This needs to be changed!!!
 p = lig - dfe + 1/klig;
 q = dfe/klig;
 feprime = -p/2 + sqrt(q + (p/2).^2);
 
-% calculate siderophore production
+% siderophore parameters, calculate siderophore production
 beta = params.beta;
 KFe_bact = params.KFe_bact;
-sidprod = beta * dop * (KFe_bact ./ (dfe + KFe_bact));
+ksid = params.ksid; 
+sidprod = beta * dop .* (KFe_bact ./ (dfe + KFe_bact));
 
 % calculate the rate of change from advection, biological uptake and
 % remineralization 

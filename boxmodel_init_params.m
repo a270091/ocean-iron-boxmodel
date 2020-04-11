@@ -285,6 +285,13 @@ params.rlig2p2 = 5.0e-4 * 116; % Lig to P ratio in uptake (Lig:C ratio * Redfiel
 params.ligrem  = 0.5e-3;       % Lig remineralization rate (1/yr)
 params.ligfac  = 100.0; % at the surface, remineralization is stronger by this factor
 
+%------------------------------------------------------------------------
+% now parameters important for siderophore cycling
+%------------------------------------------------------------------------
+params.beta = 12.0;
+params.KFe_bact = 0.1;
+params.ksid = 10.0 * params.klig;
+
 return
 
 
