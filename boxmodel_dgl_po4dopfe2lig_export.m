@@ -1,4 +1,4 @@
-function dydt  = boxmodel_dgl_po4dopfe_export(~,y)
+function dydt  = boxmodel_dgl_po4dopfe2lig_export(~,y)
 % function dydt  = boxmodel_dgl(~,y)
 %
 % definition of the rhs of the differential equations of a 12-box
@@ -51,17 +51,30 @@ rlig2p2 = params.rlig2p2;
 ligrem  = params.ligrem;
 surffac = params.ligfac;
 
-% calculate free iron 
-% This needs to be changed!!!
-p = lig - dfe + 1/klig;
-q = dfe/klig;
-feprime = -p/2 + sqrt(q + (p/2).^2);
-
-% siderophore parameters, calculate siderophore production
+% siderophore parameters, 
 beta = params.beta;
 KFe_bact = params.KFe_bact;
 ksid = params.ksid; 
+
+% calculate free iron with two different ligands from third-order
+% polynomial equation
+feprime = zeros(12,1);
+for k=1:nbox
+  % polynomial coefficients
+  a3 = -klig*ksid;
+  a2 = ( klig*ksid*(dfe(k) - lig(k) - sid(k)) - klig - ksid );
+  a1 = (klig + ksid)*dfe(k) - 1 - klig*lig(k) - ksid*sid(k);
+  a0 = dfe(k);
+  % solve cubic equation and return the largest real root
+  test = sort( roots([a3 a2 a1 a0]), 'ComparisonMethod','real' );
+  % calculate speciation
+  feprime(k) = test(end);
+end
+% fprintf('feprime: %i %i\n', size(feprime))
+
+% calculate siderophore production
 sidprod = beta * dop .* (KFe_bact ./ (dfe + KFe_bact));
+% fprintf('sidprod: %i %i\n', size(sidprod))
 
 % calculate the rate of change from advection, biological uptake and
 % remineralization 
@@ -74,6 +87,7 @@ ligremin = ligrem*lig;
 ligremin(1:5) = ligremin(1:5)*surffac;
 dligdt = advect*lig + rlig2p*remin + rlig2p2*uptake - ligremin; 
 dsiddt = advect*sid + sidprod - dopremin*sid;
+% fprintf('dSdt: %i %i\n', size(dsiddt))
 
 % save individual terms on the rhs of the Fe equation for analysis
 rhs.advect = advect*dfe;

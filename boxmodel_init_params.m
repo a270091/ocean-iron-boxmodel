@@ -288,7 +288,7 @@ params.ligfac  = 100.0; % at the surface, remineralization is stronger by this f
 %------------------------------------------------------------------------
 % now parameters important for siderophore cycling
 %------------------------------------------------------------------------
-params.beta = 12.0;
+params.beta = 6.0;
 params.KFe_bact = 0.1;
 params.ksid = 10.0 * params.klig;
 
