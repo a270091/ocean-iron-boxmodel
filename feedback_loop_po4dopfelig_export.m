@@ -107,6 +107,20 @@ for kl = 1:nk
 end
 
 %---------------------------------------------------------------------------------
+% calculate feedback factors
+%---------------------------------------------------------------------------------
+
+ik0 = find(percentage==1);
+f_export = (tot_export_run2(ik0+1) - tot_export_run2(ik0-1)) / ...
+    (tot_export_run1(ik0+1) - tot_export_run1(ik0-1));
+f_surf_fe = (surf_fe_run2(ik0+1) - surf_fe_run2(ik0-1)) / ...
+    (surf_fe_run1(ik0+1) - surf_fe_run1(ik0-1));
+f_av_fe = (av_fe_run2(ik0+1) - av_fe_run2(ik0-1)) / ...
+    (av_fe_run1(ik0+1) - av_fe_run1(ik0-1));
+f_SO_fe = (SO_fe_run2(ik0+1) - SO_fe_run2(ik0-1)) / ...
+    (SO_fe_run1(ik0+1) - SO_fe_run1(ik0-1));
+
+%---------------------------------------------------------------------------------
 % make a plot of the linearized and the nonlinear reaction
 %---------------------------------------------------------------------------------
 
