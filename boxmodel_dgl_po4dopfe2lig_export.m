@@ -55,6 +55,7 @@ surffac = params.ligfac;
 beta = params.beta;
 KFe_bact = params.KFe_bact;
 ksid = params.ksid; 
+sidremin = params.sidremin;
 
 % calculate free iron with two different ligands from third-order
 % polynomial equation
@@ -86,7 +87,7 @@ ddfedt = advect*dfe - rfe2p*uptake + rfe2p*remin  ...
 ligremin = ligrem*lig;
 ligremin(1:5) = ligremin(1:5)*surffac;
 dligdt = advect*lig + rlig2p*remin + rlig2p2*uptake - ligremin; 
-dsiddt = advect*sid + sidprod - dopremin*sid;
+dsiddt = advect*sid + sidprod - sidremin*sid;
 % fprintf('dSdt: %i %i\n', size(dsiddt))
 
 % save individual terms on the rhs of the Fe equation for analysis

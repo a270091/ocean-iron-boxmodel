@@ -291,6 +291,7 @@ params.ligfac  = 100.0; % at the surface, remineralization is stronger by this f
 params.beta = 6.0;
 params.KFe_bact = 0.1;
 params.ksid = 10.0 * params.klig;
+params.sidremin = 0.5;  % the same as DOP remineralization rate as initial guess
 
 return
 
