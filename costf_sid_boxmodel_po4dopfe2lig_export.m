@@ -15,6 +15,7 @@ if (nargin>0)
   params.KFe_bact = pvec_dimensional(2)*pvec(2);
   params.ksid     = pvec_dimensional(3)*pvec(3);
   params.rlig2p2  = pvec_dimensional(4)*pvec(4);
+  params.sidremin = pvec_dimensional(5)*pvec(5);
 end
 
 % initial PO4 distribution

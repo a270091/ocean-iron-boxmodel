@@ -14,11 +14,13 @@ fe_data = femedian
 % parameters as simple factors multiplying the original dimensional parameters)
 %----
 
-pvec_ini = ones(4,1);
+pvec_ini = ones(5,1);
 pvec_dimensional(1) = 6.0;      % params.beta
 pvec_dimensional(2) = 0.1;      % params.KFe_bact
 pvec_dimensional(3) = 1000.0;   % params.ksid
-pvec_dimensional(4) = 5.0e-4 * 116;   % params.rlig2p2
+% pvec_dimensional(4) = 5.0e-4 * 116;   % params.rlig2p2
+pvec_dimensional(4) = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
+pvec_dimensional(5) = 0.5;      % params.sidremin
 pvec = pvec_ini;
 
 [f_ini,dfe_ini] = costf_sid_boxmodel_po4dopfe2lig_export(pvec_ini);
@@ -31,21 +33,22 @@ pvec = pvec_ini;
 % here we change both the production rate and the ligand stability constant,
 % assuming no production of weak ligand during phytoplankton growth
 % (pvec(4)=0)
-pvec(4) = 0.0;
-nk = 11;
-nm = 11;
+pvec(4) = 1.0;
+pvec(5) = 0.01;
+nk = 21;
+nm = 6;
 misfit = zeros(nk,nm);
 p1 = zeros(nk,1);
-p1max = 20.0;
-p2 = zeros(nk,1);
-p2max = 0.25;
+p1max = 1.5;
+p2 = zeros(nm,1);
+p2max = 0.01;
 for k=1:nk
   pvec(1) = (k-1)*p1max/(nk-1);
   p1(k) = pvec(1);
-  for m=1:nk
+  for m=1:nm
     fprintf('%i %i\n',k,m)
     pvec(2) = (m-1)/(nm-1)*p2max;
-    p2(m) = pvec(4);
+    p2(m) = pvec(2);
     misfit(k,m) = costf_sid_boxmodel_po4dopfe2lig_export(pvec);
   end
 end
@@ -53,8 +56,11 @@ end
 figure;
 plot(p1,misfit(:,1));
 hold on
-plot(p1,misfit(:,6),'r');
-plot(p1,misfit(:,11),'g');
+plot(p1,misfit(:,2),'r');
+plot(p1,misfit(:,3),'g');
+plot(p1,misfit(:,4),'g');
+plot(p1,misfit(:,5),'g');
+plot(p1,misfit(:,6),'g');
 
 return
 

@@ -14,11 +14,12 @@ fe_data = femedian
 % parameters as simple factors multiplying the original dimensional parameters)
 %----
 
-pvec_ini = ones(4,1);
+pvec_ini = ones(5,1);
 pvec_dimensional(1) = 6.0;      % params.beta
 pvec_dimensional(2) = 0.1;      % params.KFe_bact
 pvec_dimensional(3) = 1000.0;   % params.ksid
 pvec_dimensional(4) = 5.0e-4 * 116;   % params.rlig2p2
+pvec_dimensional(5) = 0.5;      % params.sidremin
 pvec = pvec_ini;
 
 [f_ini,dfe_ini] = costf_sid_boxmodel_po4dopfe2lig_export(pvec_ini);

@@ -15,6 +15,12 @@ lig_init = 1.0 + zeros(size(po4_init));
 sid_init = zeros(size(po4_init));
 conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 
+% reset some parameters to better values for the siderophore
+params.beta = 6.0 * 0.225;
+params.KFe_bact = 0.1 * 0.01;
+params.rlig2p2 = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
+params.sidremin = 0.5*0.01;
+
 % integrate
 tspan = (0:50:5000);
 conc = ode23s(@boxmodel_dgl_po4dopfe2lig_export, tspan, conc_init);
@@ -83,7 +89,7 @@ xlabel('WOA-derived PO_4');
 ylabel('model PO_4');
 yl = get(gca,'YLim');
 hd = plot(yl,yl,'k');
-print('PO4_boxmodel_po4dopfelig_sed.png','-dpng')
+print('PO4_boxmodel_po4dopfe2lig_sed.png','-dpng')
 
 % plot phosphorus for each box, with data
 %figure
@@ -105,6 +111,13 @@ set(h,'MarkerSize',10, 'LineWidth',2);
 ylabel('dFe [nmol L^{-1}]');
 set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
 set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
-print('fe_vs_data_po4dopdfelig_sed.png','-dpng');
+print('fe_vs_data_po4dopdfe2lig_sed.png','-dpng');
+
+% also calculate mean error (cost function) for iron
+dfe_final = conc.y(25:36,end);
+diff = femedian - dfe_final;
+% f = sqrt( sum( (diff.^2).*params.volume ) ./ sum(params.volume) );
+f = sqrt( sum( (diff.^2) ) );
+fprintf('costf: %f\n',f);
 
 end
