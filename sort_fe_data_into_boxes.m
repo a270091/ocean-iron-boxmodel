@@ -208,6 +208,10 @@ for l = 1:nstations
         sample_depth = depthprof(k);
         kk = sum(sample_depth>depth_bnds(1:33));
         whichbox = box_indices(ix,jy,kk);
+	if (feprof(k)>10)
+	  fprintf('Fe: %f, lat,lon,depth: %f %f %f, box %i\n',...
+		  feprof(k),lon_fe(l), lat_fe(l), depthprof(k), whichbox)
+	end
         if (whichbox>0)
             nboxdata(whichbox) = nboxdata(whichbox)+1;
             feboxdata(whichbox,nboxdata(whichbox)) = feprof(k);
