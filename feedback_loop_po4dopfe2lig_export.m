@@ -30,11 +30,23 @@ lig_init = 1.0 + zeros(size(po4_init));
 sid_init = zeros(size(po4_init));
 conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 
-% reset some parameters to better values for the siderophore
-params.beta = 6.0 * 0.225;
-params.KFe_bact = 0.1 * 0.01;
-params.rlig2p2 = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
-params.sidremin = 0.5*0.01;
+% Reset some parameters to better values for the siderophore.
+% From the large number of different parameter sets, we use here two
+% examples that are more or less equally good in terms of reproducing Fe
+% observations. One has a siderophore lifetime of 200 years, the other of
+% 20 years
+parchoice=2;
+if parchoice==1
+  params.beta = 6.0 * 0.225;
+  params.KFe_bact = 0.1 * 0.01;
+  params.rlig2p2 = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
+  params.sidremin = 0.5*0.01;
+else
+  params.beta = 6.0;
+  params.KFe_bact = 0.1 * 0.01;
+  params.rlig2p2 = 1.8 * 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
+  params.sidremin = 0.5*0.1;
+end
 
 %---------------------------------------------------------------------------------
 % run0: first integration of the box model, with variable ligands
