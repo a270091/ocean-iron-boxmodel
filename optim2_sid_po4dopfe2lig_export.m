@@ -33,13 +33,14 @@ pvec = pvec_ini;
 % here we change both the production rate and the ligand stability constant,
 % assuming no production of weak ligand during phytoplankton growth
 % (pvec(4)=0)
-pvec(4) = 1.0;
-pvec(5) = 0.01;
-nk = 21;
+pvec(4) = 2.6;
+%pvec(5) = 0.01;
+pvec(5) = 0.1;
+nk = 11;
 nm = 6;
 misfit = zeros(nk,nm);
 p1 = zeros(nk,1);
-p1max = 1.5;
+p1max = 3.0;
 p2 = zeros(nm,1);
 p2max = 0.01;
 for k=1:nk

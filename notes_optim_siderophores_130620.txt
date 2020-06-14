@@ -1,0 +1,103 @@
+p(5)=0.01, p(4)=1.0:
+0 <= p(1) <= 1.5
+0 <= p(2) <= 0.01
+min(c) = 0.726
+
+p(5)=0.02:
+0 <= p(1) <= 1.5
+0 <= p(2) <= 0.01
+min(c) = 0.762
+
+p(5)=0.02:
+0 <= p(1) <= 3.0
+0 <= p(2) <= 0.01
+min(c) = 0.761
+
+p(5)=0.05:
+0 <= p(1) <= 5.0
+0 <= p(2) <= 0.01
+min(c) = 0.794
+
+p(5)=0.05:
+0 <= p(1) <= 10.0
+0 <= p(2) <= 0.005
+min(c) = 0.791
+
+p(5)=0.1:
+0 <= p(1) <= 10.0
+0 <= p(2) <= 0.005
+min(c) = 0.804
+
+p(5)=0.1:
+0 <= p(1) <= 20.0
+0 <= p(2) <= 0.0025
+min(c) = 0.804
+
+p(5)=0.1, p(4)=1.2:
+0 <= p(1) <= 20.0
+0 <= p(2) <= 0.0025
+min(c) = 0.784
+
+p(5)=0.1, p(4)=1.4:
+0 <= p(1) <= 20.0
+0 <= p(2) <= 0.0025
+min(c) = 0.765
+
+p(5)=0.1, p(4)=1.6:
+0 <= p(1) <= 20.0
+0 <= p(2) <= 0.0025
+min(c) = 0.746
+
+Notiz: Je hoeher p(4), desto geringer der Gewinn in Kostenfunktion,
+der mit Siderophoren moeglich ist (d.h. desto geringer der Unterschied
+zwischen dem Wert fuer p(1)=0 und dem besten Wert). Interpretation:
+mit Zunahme von p(4) ist die Konstenfunktion effizienter zu senken als
+mit irgendeiner Wahl von p(1), p(2) und p(5). 
+
+p(5)=0.1, p(4)=1.8:
+0 <= p(1) <= 20.0
+0 <= p(2) <= 0.0025
+min(c) = 0.727
+
+Noch etwas genauer hinschauen, was ein vernueftigerer (d.h. nicht ganz
+so niedriger) p(2) bei gegebenem p(4) sein koennte:
+
+p(5)=0.1, p(4)=1.8:
+0 <= p(1) <= 10.0
+0 <= p(2) <= 0.005
+min(c) = 0.727
+
+p(5)=0.1, p(4)=1.8:
+0 <= p(1) <= 4.0
+0 <= p(2) <= 0.01
+min(c) = 0.728
+
+Eine nahe-optimale Wahl:
+p(1) = 1;
+p(2) = 0.01;
+c = 0.7298
+
+Noch etwas weiterverfolgen, ab welchen p(4) Siderophore gar keine
+Verbesserung mehr bringen:
+
+p(5)=0.1, p(4)=2.0:
+0 <= p(1) <= 4.0
+0 <= p(2) <= 0.01
+min(c) = 0.710 (aber fur p(1)=0 auch schon 0.758)
+
+p(5)=0.1, p(4)=2.2:
+0 <= p(1) <= 4.0
+0 <= p(2) <= 0.01
+min(c) = 0.694 (aber fur p(1)=0 auch schon 0.718)
+
+p(5)=0.1, p(4)=2.4:
+0 <= p(1) <= 4.0
+0 <= p(2) <= 0.01
+min(c) = 0.678 (aber fur p(1)=0 auch schon 0.686)
+
+p(5)=0.1, p(4)=2.6:
+0 <= p(1) <= 3.0
+0 <= p(2) <= 0.01
+hier ist min(c)=0.6642, fast exakt dasselbe wie fur p(1)=0, naemlich 0.6645
+
+Das heisst, fuer p(4)>2.6 sind siderophore aus jeden Fall verschlechternd. 

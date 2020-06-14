@@ -120,4 +120,8 @@ diff = femedian - dfe_final;
 f = sqrt( sum( (diff.^2) ) );
 fprintf('costf: %f\n',f);
 
+% what are the final siderophore and DOC-ligand concentrations
+lig_final = conc.y(37:48,end);
+sid_final = conc.y(49:60,end);
+
 end
