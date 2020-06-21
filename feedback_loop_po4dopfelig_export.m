@@ -120,6 +120,12 @@ f_av_fe = (av_fe_run2(ik0+1) - av_fe_run2(ik0-1)) / ...
 f_SO_fe = (SO_fe_run2(ik0+1) - SO_fe_run2(ik0-1)) / ...
     (SO_fe_run1(ik0+1) - SO_fe_run1(ik0-1));
 
+fprintf('feedback factors and gains\n')
+fprintf('dFe (average): f =%5.2f g =%5.2f\n',f_av_fe,((f_av_fe-1)/f_av_fe))
+fprintf('dFe (surface): f =%5.2f g =%5.2f\n',f_surf_fe,((f_surf_fe-1)/f_surf_fe))
+fprintf('dFe (S.Ocean): f =%5.2f g =%5.2f\n',f_SO_fe,((f_SO_fe-1)/f_SO_fe))
+fprintf('Export       : f =%5.2f g =%5.2f\n',f_export,((f_export-1)/f_export))
+
 %---------------------------------------------------------------------------------
 % make a plot of the linearized and the nonlinear reaction
 %---------------------------------------------------------------------------------
