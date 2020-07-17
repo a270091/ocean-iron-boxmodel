@@ -67,7 +67,17 @@ fprintf('Sediment iron input: %8.2e mol/yr \n',sed_fe_sol);
 fprintf('Hydrothermal iron input: %8.2e mol/yr \n',hyd_fe_sol);
 fprintf('Residence time: %6.2f yr \n',residence_time);
 
-do_plot=1;
+% save final concentrations as a table
+% (for later plotting of equilibrium ligands)
+finalstate = conc.y(:,end);
+fid = fopen('equil_po4dopfelig_export.dat','w');
+for k=1:12
+  fprintf(fid,'%8.4f %8.3f %8.4f %8.4f\n', finalstate(k),...
+	 finalstate(k+12),finalstate(k+24),finalstate(k+36));
+end
+fclose(fid);
+
+do_plot=0;
 
 if (do_plot),
 % plot phosphorus vs data
