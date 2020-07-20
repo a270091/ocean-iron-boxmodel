@@ -46,7 +46,4 @@ ylabel('Total ligand [nmol L^{-1}]');
 set(gca,'XTickLabelRotation',45.0);
 set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 1.8]);
 
-return
-
-bar(totallig)
-% print('fe_vs_data_po4dopdfe2lig_sed.png','-dpng');
+% print('ligands_allruns.png','-dpng');
