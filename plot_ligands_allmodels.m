@@ -26,9 +26,27 @@ boxmodel_init_params
 
 totallig = [params.lig*ones(12,1), a(:,4), b(:,4)+b(:,5), c(:,4)+c(:,5)];
 
-bar(totallig)
-%set(h,'MarkerSize',10, 'LineWidth',2);
+lig1 = [a(:,4), b(:,4), c(:,4)];
+lig2 = [zeros(12,1), b(:,5), c(:,5)];
+bothligs = zeros(12,3,2);
+bothligs(:,:,1) = lig1;
+bothligs(:,:,2) = lig2;
+
+addpath('~/matlab/tools/plotBarStackGroups/')
+hb = plotBarStackGroups(bothligs,params.names);
+set(hb(1,1),'EdgeColor','none')
+set(hb(1,2),'EdgeColor','none')
+set(hb(2,1),'EdgeColor','none')
+set(hb(2,2),'FaceColor',[0.8290 0.5940 0.0250],'EdgeColor','none')
+set(hb(3,1),'EdgeColor','none')
+set(hb(3,2),'FaceColor',[0.3660 0.5740 0.0880],'EdgeColor','none')
+hold on
+hl = plot([0 13],[params.lig params.lig],'k--');
 ylabel('Total ligand [nmol L^{-1}]');
-set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
-set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
+set(gca,'XTickLabelRotation',45.0);
+set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 1.8]);
+
+return
+
+bar(totallig)
 % print('fe_vs_data_po4dopdfe2lig_sed.png','-dpng');
