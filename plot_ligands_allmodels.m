@@ -34,16 +34,19 @@ bothligs(:,:,2) = lig2;
 
 addpath('~/matlab/tools/plotBarStackGroups/')
 hb = plotBarStackGroups(bothligs,params.names);
-set(hb(1,1),'EdgeColor','none')
+%set(hb(1,1),'EdgeColor','none')
+set(hb(1,1),'FaceColor',[0.0 0.15 0.70],'EdgeColor','none')
 set(hb(1,2),'EdgeColor','none')
-set(hb(2,1),'EdgeColor','none')
-set(hb(2,2),'FaceColor',[0.8290 0.5940 0.0250],'EdgeColor','none')
-set(hb(3,1),'EdgeColor','none')
-set(hb(3,2),'FaceColor',[0.3660 0.5740 0.0880],'EdgeColor','none')
+%set(hb(2,1),'EdgeColor','none')
+set(hb(2,1),'FaceColor',[0.48 0.75 0.026],'EdgeColor','none')
+set(hb(2,2),'FaceColor',[0.30 0.50 0.016],'EdgeColor','none')
+%set(hb(3,1),'EdgeColor','none')
+set(hb(3,1),'FaceColor',[0.96 0.80 0.37],'EdgeColor','none')
+set(hb(3,2),'FaceColor',[0.64 0.52 0.24],'EdgeColor','none')
 hold on
 hl = plot([0 13],[params.lig params.lig],'k--');
 ylabel('Total ligand [nmol L^{-1}]');
 set(gca,'XTickLabelRotation',45.0);
-set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 1.8]);
+set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 1.8],'box','on');
 
-% print('ligands_allruns.png','-dpng');
+print('ligands_allruns.png','-dpng','-r600');

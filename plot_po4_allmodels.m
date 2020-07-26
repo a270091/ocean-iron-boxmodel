@@ -40,17 +40,21 @@ global params
 boxmodel_init_params
 po4_woa = params.po4init;
 
-figure(1)
+figure(2)
 clf
-h0 = plot(po4_woa, po4_cl,'x');
-set(h0,'LineWidth',2,'MarkerSize',10,'Color',[0.6 0.2 0.1]);
+h0 = plot(po4_woa, po4_cl,'.');
+set(h0,'LineWidth',2,'MarkerSize',50,'Color',[0.8 0.2 0.1]);
 hold on 
-h1 = plot(po4_woa, po4_1l,'x');
-set(h1,'LineWidth',2,'MarkerSize',10,'Color',[0 0.4470 0.7410]);
-h2 = plot(po4_woa, po4_2l1,'x');
-set(h2,'LineWidth',2,'MarkerSize',10,'Color',[0.8290 0.5940 0.0250]);
-h3 = plot(po4_woa, po4_2l2,'x');
-set(h3,'LineWidth',2,'MarkerSize',10,'Color',[0.3660 0.5740 0.0880]);
+h1 = plot(po4_woa, po4_1l,'.');
+set(h1,'LineWidth',2,'MarkerSize',40,'Color',[0 0.15 0.70]);
+h2 = plot(po4_woa, po4_2l1,'.');
+%set(h2,'LineWidth',2,'MarkerSize',30,'Color',[0.3660 0.5740 0.0880]);
+%set(h2,'LineWidth',2,'MarkerSize',30,'Color',[0.16 0.80 0.05]);
+set(h2,'LineWidth',2,'MarkerSize',30,'Color',[0.48 0.75 0.26]);
+h3 = plot(po4_woa, po4_2l2,'.');
+% set(h3,'LineWidth',2,'MarkerSize',20,'Color',[0.8290 0.5940 0.0250]);
+set(h3,'LineWidth',2,'MarkerSize',20,'Color',[0.960 0.80 0.37]);
+%set(h3,'LineWidth',2,'MarkerSize',20,'Color',[0.8290 0.040 0.850]);
 set(gca,'PlotBoxAspectRatio',[1 1 1],'FontSize',12);
 xlabel('WOA-derived PO_4');
 ylabel('model PO_4');
@@ -122,5 +126,5 @@ for k=1:12
     end
 end
 
-print('PO4_all4boxmodels.png','-dpng')
+print('PO4_all4boxmodels.png','-dpng','-r600');
 
