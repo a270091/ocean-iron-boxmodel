@@ -2,6 +2,7 @@ function [] = myboxplot(medianvec,q1vec,q3vec,minvec,maxvec)
 % MYBOXPLOT: creates a box-plot 
 nd = length(medianvec);
 hm  = plot(medianvec,'k*');
+set(hm,'MarkerSize',15)
 hold on
 d = 0.4;
 for k=1:nd
