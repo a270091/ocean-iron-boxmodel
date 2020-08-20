@@ -293,6 +293,13 @@ params.KFe_bact = 0.1;
 params.ksid = 10.0 * params.klig;
 params.sidremin = 0.5;  % the same as DOP remineralization rate as initial guess
 
+%------------------------------------------------------------------------
+% and finally two parameters for a globally constant weak ligand (humic
+% acid or so)
+%------------------------------------------------------------------------
+params.khum = params.klig/10; % humic acid binding strength
+params.hum = 0.2;             % humic ligand 'concentration'
+
 return
 
 
