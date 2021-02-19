@@ -77,6 +77,9 @@ for k=1:12
 end
 fclose(fid);
 
+% save parameter values as a matlab-file
+save('parameters_1l.mat','-struct','params');
+
 do_plot=0;
 
 if (do_plot),

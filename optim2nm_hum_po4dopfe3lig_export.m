@@ -30,10 +30,10 @@ pvec = pvec_ini;
 %----
 options = optimset('Display','iter','TolX',0.02,'TolFun',0.02);
 
-ni = 2;
+ni = 3;
 pvec_all = zeros(ni^3,4);
 cost_all = zeros(ni^3,1);
-dn = 2. / (ni+1)
+dn = 2. / (ni+1);
 nn = 0;
 for k=1:ni
   pvec_ini(1) = dn*k;

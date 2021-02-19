@@ -21,7 +21,7 @@ conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 % observations. One has a siderophore lifetime of 200 years, the other of
 % 20 years
 
-parchoice=2;
+parchoice=1;
 if parchoice==1
   params.beta = 6.0 * 0.225;
   params.KFe_bact = 0.1 * 0.01;
@@ -103,6 +103,12 @@ for k=1:12
 end
 fclose(fid);
 
+% save parameter values as a matlab-file
+if (parchoice==1)
+   save('parameters_2l1.mat','-struct','params');
+else
+   save('parameters_2l2.mat','-struct','params');
+end
 
 do_plot=0;
 

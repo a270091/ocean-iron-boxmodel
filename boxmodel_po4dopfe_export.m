@@ -73,7 +73,10 @@ for k=1:12
 end
 fclose(fid);
 
-do_plot=1;
+% save parameter values as a matlab-file
+save('parameters_0l.mat','-struct','params');
+
+do_plot=0;
 
 if (do_plot),
 % plot phosphorus vs data

@@ -1,27 +1,27 @@
 % read equilibrium concentrations from the model runs
 
-fid = fopen('equil_po4dopfe_export.dat','r');
+fid = fopen('results/equil_po4dopfe_export.dat','r');
 a0 = zeros(12,3);
 for k=1:12
   a0(k,:) = fscanf(fid,'%f',3);
 end
 fclose(fid);
 
-fid = fopen('equil_po4dopfelig_export.dat','r');
+fid = fopen('results/equil_po4dopfelig_export.dat','r');
 a = zeros(12,4);
 for k=1:12
   a(k,:) = fscanf(fid,'%f',4);
 end
 fclose(fid);
 
-fid = fopen('equil_po4dopfe2lig_export_2l1.dat','r');
+fid = fopen('results/equil_po4dopfe2lig_export_2l1.dat','r');
 b = zeros(12,5);
 for k=1:12
   b(k,:) = fscanf(fid,'%f',5);
 end
 fclose(fid);
 
-fid = fopen('equil_po4dopfe2lig_export_2l2.dat','r');
+fid = fopen('results/equil_po4dopfe2lig_export_2l2.dat','r');
 c = zeros(12,5);
 for k=1:12
   c(k,:) = fscanf(fid,'%f',5);
