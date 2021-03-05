@@ -21,20 +21,26 @@ conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 % observations. One has a siderophore lifetime of 200 years, the other of
 % 20 years
 
-parchoice=2;
+parchoice=1;
+pvec_dimensional(1) = 0.3;    % params.hum
+pvec_dimensional(2) = 2.5e-4 * 116; % Lig to P ratio in POC remineralization
+                                    % (Lig:C ratio * Redfield C:P)
+pvec_dimensional(3) = 100.;   % params.ligfac
+pvec_dimensional(4) = 0.5e-3; % params.ligrem
 if parchoice==1
-  params.beta = 6.0 * 0.225;
-  params.KFe_bact = 0.1 * 0.01;
-  params.rlig2p2 = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
-  params.sidremin = 0.5*0.01;
-else
-  params.beta = 6.0;
-  params.KFe_bact = 0.1 * 0.01;
-  params.rlig2p2 = 1.8 * 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
-  params.sidremin = 0.5*0.1;
+    pvec(1) = 0.0000;
+    pvec(2) = 16.3597;
+    pvec(3) = 487.7978;
+    pvec(4) = 0.2028;
+    % else
+    % params.hum=
 end
-% set humic acid background
-params.hum=0.3
+params.hum      = pvec_dimensional(1) * pvec(1); 
+params.rlig2p   = pvec_dimensional(2) * pvec(2);
+params.ligfac   = pvec_dimensional(3) * pvec(3);
+params.ligrem   = pvec_dimensional(4) * pvec(4);
+params.sidremin = 0.5*0.1;
+params.KFe_bact = 0.1*0.01;
 
 % integrate
 tspan = (0:50:5000);
@@ -94,9 +100,9 @@ fprintf('Residence time: %6.2f yr \n',residence_time);
 % (for later plotting of equilibrium ligands)
 finalstate = conc.y(:,end);
 if (parchoice==1),
-  fid = fopen('equil_po4dopfe3lig_export_2l1.dat','w');
-else
-  fid = fopen('equil_po4dopfe3lig_export_2l2.dat','w');
+  fid = fopen('equil_po4dopfe3lig_export.dat','w');
+  % else
+  % fid = fopen('equil_po4dopfe3lig_export_2l2.dat','w');
 end
 for k=1:12
   fprintf(fid,'%8.4f %8.3f %8.4f %8.4f %8.4f\n', finalstate(k),...
@@ -105,6 +111,12 @@ for k=1:12
 end
 fclose(fid);
 
+% save parameter values as a matlab-file
+if (parchoice==1)
+   save('parameters_3l1.mat','-struct','params');
+   %else
+   %save('parameters_2l2.mat','-struct','params');
+end
 
 do_plot=1;
 
@@ -120,7 +132,7 @@ if (do_plot),
   ylabel('model PO_4');
   yl = get(gca,'YLim');
   hd = plot(yl,yl,'k');
-  print('PO4_boxmodel_po4dopfe2lig_sed.png','-dpng')
+  % print('PO4_boxmodel_po4dopfe2lig_sed.png','-dpng')
 
   % plot phosphorus for each box, with data
   %figure
@@ -142,7 +154,7 @@ if (do_plot),
   ylabel('dFe [nmol L^{-1}]');
   set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
   set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
-  print('fe_vs_data_po4dopdfe2lig_sed.png','-dpng');
+  % print('fe_vs_data_po4dopdfe2lig_sed.png','-dpng');
 
   % what are the final siderophore and DOC-ligand concentrations
   lig_final = conc.y(37:48,end);
@@ -153,5 +165,5 @@ if (do_plot),
   diff = femedian - dfe_final;
   % f = sqrt( sum( (diff.^2).*params.volume ) ./ sum(params.volume) );
   f = sqrt( sum( (diff.^2) ) );
-  fprintf('costf: %f\n',f);
+  fprintf('iron costf: %f\n',f);
 end

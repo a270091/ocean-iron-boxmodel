@@ -1,5 +1,11 @@
+%-------------
 % optimizes parameters for the ligand dynamics to obtain a better
 % fit with iron data
+%
+% this version uses a genetic algorithm as coded in the GODLIKE 
+% toolbox
+%-------------
+addpath('/Users/cvoelker/matlab/tools/GODLIKE');
 
 %---
 % start timer, to get an idea how long optimzations take
@@ -19,51 +25,42 @@ fe_data = femedian
 % parameters as simple factors multiplying the original dimensional parameters)
 %----
 
-pvec_ini = ones(4,1);
+pvec_ini = ones(5,1);
 pvec_dimensional(1) = 0.3;      % params.hum
 pvec_dimensional(2) = 2.5e-4 * 116; % Lig to P ratio in POC remineralization
                                     % (Lig:C ratio * Redfield C:P)
 pvec_dimensional(3) = 1.8 * 2.5e-4 * 116 * 0.67;   % params.rlig2p2
 pvec_dimensional(4) = 0.5e-3; % params.ligrem
+pvec_dimensional(5) = 100.0;  % params.ligfac
 pvec = pvec_ini;
 
 [f_ini,dfe_ini] = costf2_hum_boxmodel_po4dopfe3lig_export(pvec_ini);
 
-%----
-% search for better parameters. Unlike the other optimization, 
-% here we do a coarse latin hypecube followed by Nelder-Mead
-%----
-options = optimset('Display','iter','TolX',0.02,'TolFun',0.02);
+%-----------------
+% constrained combinatorial optimzation, using GODLIKE
+%-----------------
+parmin = [0.05 0.05 0.05 0.05];
+parmax = [2.0  2.0  2.0  2.0];
+optvec = set_options('TolFun',1.0e-4,'MaxIters',100,'Display','on');
 
-ni = 3;
-pvec_all = zeros(ni^3,4);
-cost_all = zeros(ni^3,1);
-dn = 2. / (ni+1);
-nn = 0;
-for k=1:ni
-  pvec_ini(1) = dn*k;
-  for l=1:ni,
-    pvec_ini(2) = dn*l;
-    for m=1:ni,
-       pvec_ini(3) = dn*m;
-       [pvec,cost] = fminsearch(@costf2_hum_boxmodel_po4dopfe3lig_export, pvec_ini,options);
-       nn = nn+1;
-       pvec_all(nn,:) = pvec(:);
-       cost_all(nn) = cost;
-    end
-  end
-end
+[paramopt,fopt] = GODLIKE(@costf2_hum_boxmodel_po4dopfe3lig_export,10,parmin,parmax,'GA',optvec);
+
+fopt2vec(nopt) = fopt2;
+paramopt2vec(nopt,:) = paramopt2;
 
 %--
 % save results into file
 %--
-fid = fopen('opt_hum_new.out','w')
-for k=1:nn
-  fprintf(fid,'%7.4f %7.4f %7.4f %7.4f %7.4f\n',cost_all(k),...
-          pvec_all(k,1),pvec_all(k,2),...
-          pvec_all(k,3),pvec_all(k,4));
+isave = 0;
+if (isave),
+    fid = fopen('opt_hum_new.out','w')
+    for k=1:nn
+        fprintf(fid,'%7.4f %7.4f %7.4f %7.4f %7.4f\n',cost_all(k),...
+                pvec_all(k,1),pvec_all(k,2),...
+                pvec_all(k,3),pvec_all(k,4));
+    end
+    fclose(fid);
 end
-fclose(fid);
 
 %--
 % end timer and print out
