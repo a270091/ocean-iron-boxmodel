@@ -28,11 +28,19 @@ for k=1:12
 end
 fclose(fid);
 
+fid = fopen('results/equil_po4dopfe3lig_export_3l1.dat','r');
+d = zeros(12,5);
+for k=1:12
+  d(k,:) = fscanf(fid,'%f',5);
+end
+fclose(fid);
+
 % extract PO4 from the model runs
 po4_cl  = a0(:,1);
 po4_1l  = a(:,1);
 po4_2l1 = b(:,1);
 po4_2l2 = c(:,1);
+po4_3l1 = d(:,1);
 
 % read box model initial parameters, to have the box names and the 
 % PO4 distribution from WOA
@@ -43,10 +51,12 @@ po4_woa = params.po4init;
 figure(2)
 clf
 h0 = plot(po4_woa, po4_cl,'.');
-set(h0,'LineWidth',2,'MarkerSize',50,'Color',[0.8 0.2 0.1]);
+set(h0,'LineWidth',2,'MarkerSize',60,'Color',[0.8 0.2 0.1]);
 hold on 
 h1 = plot(po4_woa, po4_1l,'.');
-set(h1,'LineWidth',2,'MarkerSize',40,'Color',[0 0.15 0.70]);
+set(h1,'LineWidth',2,'MarkerSize',50,'Color',[0 0.15 0.70]);
+h4 = plot(po4_woa, po4_3l1,'.');
+set(h4,'LineWidth',2,'MarkerSize',40,'Color',[0.00 0.50 0.00]);
 h2 = plot(po4_woa, po4_2l1,'.');
 %set(h2,'LineWidth',2,'MarkerSize',30,'Color',[0.3660 0.5740 0.0880]);
 %set(h2,'LineWidth',2,'MarkerSize',30,'Color',[0.16 0.80 0.05]);
@@ -126,5 +136,5 @@ for k=1:12
     end
 end
 
-print('PO4_all4boxmodels.png','-dpng','-r600');
+print('PO4_all5boxmodels.png','-dpng','-r600');
 

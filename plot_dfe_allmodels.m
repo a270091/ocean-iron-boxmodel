@@ -28,11 +28,19 @@ for k=1:12
 end
 fclose(fid);
 
-% extract PO4 from the model runs
+fid = fopen('results/equil_po4dopfe3lig_export_3l1.dat','r');
+d = zeros(12,5);
+for k=1:12
+  d(k,:) = fscanf(fid,'%f',5);
+end
+fclose(fid);
+
+% extract iron (3rd column) from the model runs
 dfe_cl  = a0(:,3);
 dfe_1l  = a(:,3);
 dfe_2l1 = b(:,3);
 dfe_2l2 = c(:,3);
+dfe_3l1 = d(:,3);
 
 % read box model initial parameters, to have the box names and the 
 % PO4 distribution from WOA
@@ -45,9 +53,11 @@ sort_fe_data_into_boxes;
 
 hold on
 h0 = plot(dfe_cl,'.');
-set(h0,'MarkerSize',30, 'LineWidth',2,'Color',[0.8 0.2 0.1]);
+set(h0,'MarkerSize',40, 'LineWidth',2,'Color',[0.8 0.2 0.1]);
 h1 = plot(dfe_1l,'.');
-set(h1,'MarkerSize',40, 'LineWidth',2,'Color',[0 0.15 0.70]);
+set(h1,'MarkerSize',50, 'LineWidth',2,'Color',[0 0.15 0.70]);
+h4 = plot(dfe_3l1,'.');
+set(h4,'MarkerSize',40, 'LineWidth',2,'Color',[0.00 0.50 0.00]);
 h2 = plot(dfe_2l1,'.');
 set(h2,'MarkerSize',30, 'LineWidth',2,'Color',[0.48 0.75 0.26]);
 h3 = plot(dfe_2l2,'.');
@@ -57,6 +67,6 @@ ylabel('dFe [nmol L^{-1}]');
 set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
 set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
 
-print('fe_vs_data_allmodels.png','-dpng','-r600');
+print('fe_vs_data_allmodels_3lig.png','-dpng','-r600');
 return
 

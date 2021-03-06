@@ -21,7 +21,7 @@ conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 % observations. One has a siderophore lifetime of 200 years, the other of
 % 20 years
 
-parchoice=1;
+parchoice=2;
 pvec_dimensional(1) = 0.3;    % params.hum
 pvec_dimensional(2) = 2.5e-4 * 116; % Lig to P ratio in POC remineralization
                                     % (Lig:C ratio * Redfield C:P)
@@ -32,8 +32,12 @@ if parchoice==1
     pvec(2) = 16.3597;
     pvec(3) = 487.7978;
     pvec(4) = 0.2028;
-    % else
-    % params.hum=
+else
+    params.beta = 0.0;
+    pvec(1) = 0.0000;
+    pvec(2) = 20.1823;
+    pvec(3) = 596.4276;
+    pvec(4) = 0.4600;
 end
 params.hum      = pvec_dimensional(1) * pvec(1); 
 params.rlig2p   = pvec_dimensional(2) * pvec(2);
@@ -101,8 +105,8 @@ fprintf('Residence time: %6.2f yr \n',residence_time);
 finalstate = conc.y(:,end);
 if (parchoice==1),
   fid = fopen('equil_po4dopfe3lig_export.dat','w');
-  % else
-  % fid = fopen('equil_po4dopfe3lig_export_2l2.dat','w');
+else
+  fid = fopen('equil_po4dopfe3lig_export_nofast.dat','w');
 end
 for k=1:12
   fprintf(fid,'%8.4f %8.3f %8.4f %8.4f %8.4f\n', finalstate(k),...
@@ -114,8 +118,8 @@ fclose(fid);
 % save parameter values as a matlab-file
 if (parchoice==1)
    save('parameters_3l1.mat','-struct','params');
-   %else
-   %save('parameters_2l2.mat','-struct','params');
+else
+   save('parameters_3l2.mat','-struct','params');
 end
 
 do_plot=1;
