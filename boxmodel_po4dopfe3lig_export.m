@@ -21,7 +21,7 @@ conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 % observations. One has a siderophore lifetime of 200 years, the other of
 % 20 years
 
-parchoice=2;
+parchoice=1;
 pvec_dimensional(1) = 0.3;    % params.hum
 pvec_dimensional(2) = 2.5e-4 * 116; % Lig to P ratio in POC remineralization
                                     % (Lig:C ratio * Redfield C:P)

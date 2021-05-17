@@ -59,23 +59,37 @@ figure(1)
 clf
 sort_fe_data_into_boxes;
 
+
+
 % whitebg([0.9 0.9 0.9]);
 
+%------------------------------------------------------
+% define colors for the 'Bright' color scheme 
+% (https://personal.sron.nl/~pault/)
+bpurple = [170, 51,119]/256;
+bred    = [238,102,119]/256;
+byellow = [204,187, 68]/256;
+bgreen  = [ 34,136, 51]/256;
+bcyan   = [102,204,238]/256;
+bblue   = [ 86,119,170]/256;
+
+%------------------------------------------------------
+% make plot 
 hold on
 h0 = plot(dfe_cl,'.');
-set(h0,'MarkerSize',40, 'LineWidth',2,'Color',[0.8 0.2 0.1]);
+set(h0,'MarkerSize',40, 'LineWidth',2,'Color',bred);
 h1 = plot(dfe_1l,'.');
-set(h1,'MarkerSize',50, 'LineWidth',2,'Color',[0 0.15 0.70]);
+set(h1,'MarkerSize',50, 'LineWidth',2,'Color',bblue);
 h5 = plot(dfe_3l2,'.');
-set(h5,'MarkerSize',40, 'LineWidth',2,'Color',[62/256 150/256 55/256]);
+set(h5,'MarkerSize',40, 'LineWidth',2,'Color',bgreen);
 %set(h5,'MarkerSize',40, 'LineWidth',2,'Color',[0.70 0.0 0.95]);
 h4 = plot(dfe_3l1,'.');
-set(h4,'MarkerSize',30, 'LineWidth',2,'Color',[120/256 221/256 120/256]);
+set(h4,'MarkerSize',30, 'LineWidth',2,'Color',byellow);
 % set(h4,'MarkerSize',30, 'LineWidth',2,'Color',[0.00 0.75 0.00]);
 %h2 = plot(dfe_2l1,'.');
 %set(h2,'MarkerSize',30, 'LineWidth',2,'Color',[0.0 0.9 0.9]);
 h3 = plot(dfe_2l2,'.');
-set(h3,'MarkerSize',20, 'LineWidth',2,'Color',[104/256 225/256 238/256]);
+set(h3,'MarkerSize',20, 'LineWidth',2,'Color',bcyan);
 % set(h3,'MarkerSize',20, 'LineWidth',2,'Color',[0.90 0.90 0.0]);
 
 % add a legend
@@ -84,20 +98,20 @@ dy = 0.1;
 dx = 0.4;
 hl0 = plot(1.5,y0,'.');
 ht0 = text(1.5+dx,y0,'CL');
-set(hl0,'MarkerSize',40, 'LineWidth',2,'Color',[0.8 0.2 0.1]);
+set(hl0,'MarkerSize',40, 'LineWidth',2,'Color',bred);
 set(ht0,'FontSize',12)
 hl1 = plot(1.5,y0-dy,'.');
 ht1 = text(1.5+dx,y0-dy,'1L');
-set(hl1,'MarkerSize',50, 'LineWidth',2,'Color',[0 0.15 0.70]);
+set(hl1,'MarkerSize',50, 'LineWidth',2,'Color',bblue);
 set(ht1,'FontSize',12)
 hl5 = plot(1.5,y0-2*dy,'.');
 ht5 = text(1.5+dx,y0-2*dy,'1H');
 %set(hl5,'MarkerSize',40, 'LineWidth',2,'Color',[0.70 0.0 0.95]);
-set(hl5,'MarkerSize',40, 'LineWidth',2,'Color',[62/256 150/256 55/256]);
+set(hl5,'MarkerSize',40, 'LineWidth',2,'Color',bgreen);
 set(ht5,'FontSize',12)
 hl4 = plot(1.5,y0-3*dy,'.');
 ht4 = text(1.5+dx,y0-3*dy,'2H');
-set(hl4,'MarkerSize',30, 'LineWidth',2,'Color',[120/256 221/256 120/256]);
+set(hl4,'MarkerSize',30, 'LineWidth',2,'Color',byellow);
 set(ht4,'FontSize',12)
 % hl2 = plot(1.5,y0-4*dy,'.');
 % ht2 = text(1.5+dx,y0-4*dy,'2L1');
@@ -107,13 +121,13 @@ set(ht4,'FontSize',12)
 hl3 = plot(1.5,y0-4*dy,'.');
 ht3 = text(1.5+dx,y0-4*dy,'2L');
 % set(hl3,'MarkerSize',20, 'LineWidth',2,'Color',[0.90 0.90 0.00]);
-set(hl3,'MarkerSize',20, 'LineWidth',2,'Color',[104/256 225/256 238/256]);
+set(hl3,'MarkerSize',20, 'LineWidth',2,'Color',bcyan);
 set(ht3,'FontSize',12)
 
 ylabel('dFe [nmol L^{-1}]');
 set(gca,'XTick',(1:12),'XTickLabel',params.names,'XTickLabelRotation',45.0);
 set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 2]);
 
-print('fe_vs_data_allmodels_mar21.png','-dpng','-r600');
+print('fe_vs_data_allmodels_may21.png','-dpng','-r600');
 return
 
