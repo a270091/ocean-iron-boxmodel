@@ -22,6 +22,19 @@ global rhs feprime export
 % initialize model parameters
 boxmodel_init_params()
 
+% depending on which case we want to solve, overwrite the parameters
+% with the one belonging to that case
+model_run = '1H'; 
+if (model_run=='1L'),
+    params2 = load('results/parameters_1l.mat');
+    params = params2;
+elseif (model_run=='1H'),
+    params2 = load('results/parameters_3l2.mat');
+    params = params2;
+else
+    fprintf('must be 1L or 1H \n')
+end
+
 % initial PO4, DOP, Fe and Ligand distribution
 po4_init = params.po4init;
 dop_init = zeros(size(po4_init));
@@ -145,7 +158,11 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'d');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_dust_export.png','-dpng')
+if (model_run=='1L'),
+    print('feedback_1L_dust_export.png','-dpng')
+elseif (model_run=='1H'),
+    print('feedback_1H_dust_export.png','-dpng')
+end
 
 figure(2)
 h1 = plot(percentage*100, surf_fe_run1);
@@ -162,7 +179,11 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'b');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_dust_surf_fe.png','-dpng')
+if (model_run=='1L'),
+    print('feedback_1L_dust_surf_fe.png','-dpng')
+elseif (model_run=='1H'),
+    print('feedback_1H_dust_surf_fe.png','-dpng')
+end
 
 figure(3)
 h1 = plot(percentage*100, av_fe_run1);
@@ -179,7 +200,11 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'a');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_dust_ave_fe.png','-dpng')
+if (model_run=='1L'),
+    print('feedback_1L_dust_ave_fe.png','-dpng')
+elseif (model_run=='1H'),
+    print('feedback_1H_dust_ave_fe.png','-dpng')
+end
 
 figure(4)
 h1 = plot(percentage*100, SO_fe_run1);
@@ -196,5 +221,9 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'c');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_dust_SO_fe.png','-dpng')
+if (model_run=='1L'),
+    print('feedback_1L_dust_SO_fe.png','-dpng')
+elseif (model_run=='1H'),
+    print('feedback_1H_dust_SO_fe.png','-dpng')
+end
 

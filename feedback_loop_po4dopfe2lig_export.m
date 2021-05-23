@@ -35,17 +35,30 @@ conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 % examples that are more or less equally good in terms of reproducing Fe
 % observations. One has a siderophore lifetime of 200 years, the other of
 % 20 years
-parchoice=2;
-if parchoice==1
-  params.beta = 6.0 * 0.225;
-  params.KFe_bact = 0.1 * 0.01;
-  params.rlig2p2 = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
-  params.sidremin = 0.5*0.01;
+% $$$ parchoice=2;
+% $$$ if parchoice==1
+% $$$   params.beta = 6.0 * 0.225;
+% $$$   params.KFe_bact = 0.1 * 0.01;
+% $$$   params.rlig2p2 = 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
+% $$$   params.sidremin = 0.5*0.01;
+% $$$ else
+% $$$   params.beta = 6.0;
+% $$$   params.KFe_bact = 0.1 * 0.01;
+% $$$   params.rlig2p2 = 1.8 * 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
+% $$$   params.sidremin = 0.5*0.1;
+% $$$ end
+
+% depending on which case we want to solve, overwrite the parameters
+% with the one belonging to that case
+model_run = '2L'; 
+if (model_run=='2L'),
+    params2 = load('results/parameters_2l2.mat');
+    params = params2;
+elseif (model_run=='2H'),
+    params2 = load('results/parameters_3l1.mat');
+    params = params2;
 else
-  params.beta = 6.0;
-  params.KFe_bact = 0.1 * 0.01;
-  params.rlig2p2 = 1.8 * 2.5e-4 * 116 * 0.67;   % params.rlig2p2 = lig2p * dopfrac
-  params.sidremin = 0.5*0.1;
+    fprintf('must be 1L or 1H \n')
 end
 
 %---------------------------------------------------------------------------------
@@ -165,7 +178,12 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'d');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_2lig_dust_export.png','-dpng')
+% print('feedback_2lig_dust_export.png','-dpng')
+if (model_run=='2L'),
+    print('feedback_2L_dust_export.png','-dpng')
+elseif (model_run=='2H'),
+    print('feedback_2H_dust_export.png','-dpng')
+end
 
 figure(2)
 h1 = plot(percentage*100, surf_fe_run1);
@@ -181,8 +199,13 @@ yl  = get(gca,'YLim');
 xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'b');
-set(ht,'Fontweight','b','FontSize',30)
+% set(ht,'Fontweight','b','FontSize',30)
 print('feedback_2lig_dust_surf_fe.png','-dpng')
+if (model_run=='2L'),
+    print('feedback_2L_dust_surf_fe.png','-dpng')
+elseif (model_run=='2H'),
+    print('feedback_2H_dust_surf_fe.png','-dpng')
+end
 
 figure(3)
 h1 = plot(percentage*100, av_fe_run1);
@@ -199,7 +222,12 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'a');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_2lig_dust_ave_fe.png','-dpng')
+% print('feedback_2lig_dust_ave_fe.png','-dpng')
+if (model_run=='2L'),
+    print('feedback_2L_dust_ave_fe.png','-dpng')
+elseif (model_run=='2H'),
+    print('feedback_2H_dust_ave_fe.png','-dpng')
+end
 
 figure(4)
 h1 = plot(percentage*100, SO_fe_run1);
@@ -216,5 +244,10 @@ xpos = xl(1) + 0.85*(xl(2) - xl(1));
 ypos = yl(1) + 0.1 *(yl(2) - yl(1));
 ht = text(xpos,ypos,'c');
 set(ht,'Fontweight','b','FontSize',30)
-print('feedback_2lig_dust_SO_fe.png','-dpng')
+%print('feedback_2lig_dust_SO_fe.png','-dpng')
+if (model_run=='2L'),
+    print('feedback_2L_dust_SO_fe.png','-dpng')
+elseif (model_run=='2H'),
+    print('feedback_2H_dust_SO_fe.png','-dpng')
+end
 
