@@ -15,6 +15,10 @@
 % (e.g. total surface iron) as a function of the percentage of perturbation.
 %---------------------------------------------------------------------------------
 
+% decide whether this program will produce plots or only output for some 
+% other plotting routine
+do_plot = 0; % 1 for plotting on
+
 % global fields for analysis
 global params
 global rhs feprime export
@@ -50,7 +54,7 @@ conc_init = [po4_init;dop_init;fe_init;lig_init;sid_init];
 
 % depending on which case we want to solve, overwrite the parameters
 % with the one belonging to that case
-model_run = '2L'; 
+model_run = '2H'; 
 if (model_run=='2L'),
     params2 = load('results/parameters_2l2.mat');
     params = params2;
@@ -140,6 +144,26 @@ for kl = 1:nk
 end
 
 %---------------------------------------------------------------------------------
+% save output for a possible combined plot for the different model versions
+%---------------------------------------------------------------------------------
+% put everything into a structure
+results.percentage = percentage;
+results.tot_export_run1 = tot_export_run1;
+results.tot_export_run2 = tot_export_run2;
+results.surf_fe_run1 = surf_fe_run1;
+results.surf_fe_run2 = surf_fe_run2;
+results.av_fe_run1 = av_fe_run1;
+results.av_fe_run2 = av_fe_run2;
+results.SO_fe_run1 = SO_fe_run1;
+results.SO_fe_run2 = SO_fe_run2;
+
+if (model_run=='2L'),
+    save('feedback_2L_dust.mat','-struct','results')
+elseif (model_run=='2H'),
+    save('feedback_2H_dust.mat','-struct','results')
+end
+
+%---------------------------------------------------------------------------------
 % calculate feedback factors
 %---------------------------------------------------------------------------------
 
@@ -158,6 +182,8 @@ fprintf('dFe (average): f =%5.2f g =%5.2f\n',f_av_fe,((f_av_fe-1)/f_av_fe))
 fprintf('dFe (surface): f =%5.2f g =%5.2f\n',f_surf_fe,((f_surf_fe-1)/f_surf_fe))
 fprintf('dFe (S.Ocean): f =%5.2f g =%5.2f\n',f_SO_fe,((f_SO_fe-1)/f_SO_fe))
 fprintf('Export       : f =%5.2f g =%5.2f\n',f_export,((f_export-1)/f_export))
+
+if ~do_plot, return; end
 
 %---------------------------------------------------------------------------------
 % make a plot of the linearized and the nonlinear reaction
