@@ -15,11 +15,11 @@ for k=1:nd
     uw_x = [k k k-d/2 k+d/2];
     yval = min(q3vec(k)+3/2*iqr,maxvec(k));
     uw_y = [q3vec(k), yval, yval, yval];
-    hw1 = plot(uw_x,uw_y);
+    hw1 = plot(uw_x,uw_y,'k');
     lw_x = [k k k-d/2 k+d/2];
     yval = max(q1vec(k)-3/2*iqr,minvec(k));
     lw_y = [q1vec(k), yval, yval, yval];
-    hw2 = plot(lw_x,lw_y);
+    hw2 = plot(lw_x,lw_y,'k');
 end
 end
 
