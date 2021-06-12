@@ -5,9 +5,6 @@
 % of export production 
 %------------------------------------------------------------
 
-% this is where I have the routine 'read_one_netcdf.m'
-addpath /Users/cvoelker/matlab/tools/MITgcm
-
 % this is where I have the sewater equation of state for calculating sigma
 addpath /Users/cvoelker/matlab/tools/whoi
 

@@ -1,11 +1,4 @@
 clear all
-%-----------------------------------------------
-% add path to read netCDF files
-ismac = strcmp(computer('arch'),'maci64');
-if (ismac==1),
-  addpath /Users/cvoelker/matlab/tools/MITgcm/
-  addpath /Users/cvoelker/matlab/tools/m_map/
-end
 
 %-----------------------------------------------
 % load monthly data

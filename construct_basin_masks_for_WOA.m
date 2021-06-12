@@ -1,7 +1,4 @@
 
-% this is where I have the routine 'read_one_netcdf.m'
-addpath /Users/cvoelker/matlab/tools/MITgcm
-
 % this is where I have the data
 datapath='/Users/cvoelker/data/climatologies/WOA09/';
 
