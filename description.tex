@@ -1,0 +1,88 @@
+\documentclass[a4paper]{scrartcl}
+
+\begin{document}
+
+\title{A simple box model for the geochemical cycling of iron in the ocean}
+
+\author{Christoph V\"olker \\
+  Alfred Wegener Institute, \\
+  Helmholtz Centre for Polar and Marine Research \\
+  Bremerhaven, Germany}
+\date{\today}
+
+\maketitle
+
+\section{Overview}
+
+This project contains matlab code to model the distribution of dissolved iron, 
+phosphate and of zero, one or two organic iron-binding ligands in the ocean. 
+The ocean is discretized into 12 boxes, representing main water masses in the
+Atlantic and Indo-Pacific ocean. Boxes are assumed to be homogeneously mixed
+and the ocean circulation is prescribed as exchanges between these boxes.
+
+The model has been used to explore feedbacks in the ocean iron cycle
+connected to organic iron complexation (manuscript in
+preparation). The full model description can be found there.
+
+The code presented here does not only contain the core model, but
+several additional tools. It is grouped broadly into the the following
+four parts:
+
+\section{Code to integrate the model and to analyse ligand
+  feedbacks:}
+
+Several different versions of the box model exist, differing in the
+number of modeled quantities in each box (\verb+boxmodel_po4.m+ for
+example solved only one quantity, namely the phosphate concentration,
+while \verb+boxmodel_po4dopfe2lig_export.m+ solves for five
+quantities, namely phoshpate, dissolved organic phosphorus, iron, and
+two ligands), and in whether export production is calculated from
+nutrients (all models ending with \verb+_export.m+), or
+prescribed.
+
+Each of these models first calls the routine
+\verb+boxmodel_init_params+ to initialize all model parameters,
+including the volume of the boxes, and the mass transports between
+them.
+
+Each of the models then uses a matlab-provided routine to integrate
+stiff ordinary equations to integrate the model into equilibrium,
+passing the name of a routine that contains the right hand side of the
+box model differential equations to this routine. These routines have
+names starting with \verb+boxmodel_dgl_+.
+
+
+
+\section{Routines to plot and analyse model output:}
+
+\section{Code for setup of the model boxes:} 
+\section{Routines to optimise parameters of the model:}
+
+\end{document}
+
+\appendix
+
+\section*{necessary files not contained in this distribution}
+
+Setting up the box model requires that the user has access to a small
+set of netCDF files describing distribution of properties within the
+ocean. All are freely downloadable from the web, but not distributed
+with the model. These files are
+
+World Ocean Atlas 2009: annual average distributions of
+- Potential temperature
+  (http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/temperature_annual_1deg.nc)
+- Salinity
+  (http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/salinity_annual_1deg.nc)
+- Phosphate
+  (http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/phosphate_annual_1deg.nc)
+- World Ocean Atlas basinmask
+  (http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NODC/.WOA09/.Masks/.basin/data.nc)
+
+GEOTRACES second intermediate data product botle data
+  (https://www.bodc.ac.uk/data/download/asset/2135/generic/)
+
+Schlitzer global export production
+
+
+

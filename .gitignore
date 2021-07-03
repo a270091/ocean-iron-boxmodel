@@ -1,4 +1,6 @@
 *~
 data.recom
+*.log
+*.aux
 plots/
 .DS_Store

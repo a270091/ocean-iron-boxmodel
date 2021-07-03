@@ -295,11 +295,11 @@ params.sidremin = 0.5;  % the same as DOP remineralization rate as initial guess
 
 %------------------------------------------------------------------------
 % and finally two parameters for a globally constant weak ligand (humic
-% acid or so)
+% acid or so) (only used the 3-ligand case which did not give better results)
 %------------------------------------------------------------------------
 params.khum = params.klig/10; % humic acid binding strength
 params.hum = 0.2;             % humic ligand 'concentration'
 
 return
-
+end
 
