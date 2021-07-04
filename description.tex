@@ -1,5 +1,13 @@
 \documentclass[a4paper]{scrartcl}
 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan
+    }
+
 \begin{document}
 
 \title{A simple box model for the geochemical cycling of iron in the ocean}
@@ -33,29 +41,158 @@ four parts:
 
 Several different versions of the box model exist, differing in the
 number of modeled quantities in each box (\verb+boxmodel_po4.m+ for
-example solved only one quantity, namely the phosphate concentration,
+example solves only one quantity, namely the phosphate concentration,
 while \verb+boxmodel_po4dopfe2lig_export.m+ solves for five
-quantities, namely phoshpate, dissolved organic phosphorus, iron, and
+quantities, namely phosphate, dissolved organic phosphorus, iron, and
 two ligands), and in whether export production is calculated from
 nutrients (all models ending with \verb+_export.m+), or
 prescribed.
 
+Running the models results in two output files, which are
+both found in the subdirectory \verb+results+: One ASCII-file
+containing the final steady state concentration of the models state
+variables in all 12 model boxes in a table (\verb+equil*.dat+), and
+one binary matlab file that documents the parameter values used in
+that model run (\verb+parameters*.mat+).
+
 Each of these models first calls the routine
-\verb+boxmodel_init_params+ to initialize all model parameters,
+\verb+boxmodel_init_params.m+ to initialize all model parameters,
 including the volume of the boxes, and the mass transports between
-them.
+them. The parameters are transferred in the form of a global
+structure variable. 
 
 Each of the models then uses a matlab-provided routine to integrate
 stiff ordinary equations to integrate the model into equilibrium,
-passing the name of a routine that contains the right hand side of the
-box model differential equations to this routine. These routines have
-names starting with \verb+boxmodel_dgl_+.
+passing the name of the routine that contains the right hand side of
+the corresponding box model differential equations to this
+routine. These routines have names \verb+boxmodel_dgl_*.m+.
 
+In the equations with prognostic ligands, one important step is to
+calculate the 'free', i.e. not organically complexed iron
+concentration. In the case of one or two organic ligands this boils
+down to finding the roots of either a quadratic or cubic polynomial. I
+also experimented with one version where a third weaker ligand was
+assumed to be present in constant concentration, as a representation
+maybe of humic substances. In that case, I created an extra function
+for the calculation of free iron, \verb+func_feprime_tree_ligands.m+. 
 
+Feedbacks between biological production and organic iron complexation
+are calculated by running one of the model variants with prognostic
+(i.e.\ variable) ligands into equilbrium, then saving the resulting
+steady-state ligand concentration, and then running the model again
+(under some changed external condition, such as dust iron input), but
+this time with ligands held fixed at the previous steady state. This
+is done by the routines \verb+feedback_loop_po4dopfelig.m+ and
+\verb+feedback_loop_po4dopfe2lig.m+. These routines also need
+additional differential equation routines which solve for phosphate,
+DOP and iron, but take the ligand concentration as spatially variable
+from the previous run with variable ligands. They are called
+\verb+boxmodel_dgl_po4dopfe_ligfix_export.m+ and
+\verb+boxmodel_dgl_po4dopfe_2ligfix_export.m+.
+
+The result from running the feedback analysis is saved in the
+directory \verb+results+ as a matlab binary file
+\verb+feedback_*.mat+.
 
 \section{Routines to plot and analyse model output:}
 
-\section{Code for setup of the model boxes:} 
+After running the models, or running the feedback analyses, the output
+can be plotted using the generated output in the \verb+results+
+directory. The plotting routines also print out some basic analyses of
+the model output to the screen. Four different plots are provided:
+
+\verb+plot_po4_allmodels_bright.m+ plots modeled phosphate
+concentrations in the twelve model boxes against the average phosphate
+concentration within the model boxes from the World Ocean Atlas
+2009. \verb+plot_po4_allmodels.m+ is an older version with less nice
+colours.
+
+\verb+plot_dfe_allmodels_bright.m+ plots modeled dissolved iron
+concentration against meadin and quantiles of observed dissolved iron
+from the second GEOTRACES intermediate data product.
+
+\verb+plot_ligands_allmodels_bright.m+ plots the steady state ligand
+concentrations for all model boxes. Since the database for observed
+ligand concentrations is to small for creating reliable median values
+for the boxes, no observation data is plotted.
+
+And finally, \verb+plot_feedbacks_allmodels_bright.m+ plots the
+variations of a number of important quantities (e.g.\ global average
+dissolved iron, and total global export production) as a function of
+external dust input, with and without the feedback.
+
+All plotting routines are set up for plotting not only one model run
+or one feedback analysis, but comporing several model runs.If you want
+to plot just one output of a model run you will have to modify them
+slightly.
+
+\section{Code for setup of the model boxes and data sets:}
+
+The parts of the code described here are not necessary if you just
+intend to play around with model as it is now, but they may be helpful
+if you e.g.\ want to extend the model by adding more boxes, or to
+introduce new/additional data sets to compare model output with.
+
+The first step for setting up the model is to calculate the volumes
+and, in the case of surface boxes, the surface area of the boxes,
+which is done in \verb+calc_boxes_for_model.m+. The same routine also
+calculates the average phosphate concentration within the boxes from
+World Ocean Atlas 2009 data, and the total export production in each
+surface box from the estimate by Schlitzer et al.  The routine uses a
+helper function \verb+read_one_netcdf.m+ to read the netcdf files for
+these data sets.
+
+To do so, the routine requires several data sets that are not
+distributed here with the code, but that should be easily downloadable
+from the web. The required files are (names should be clickable links)
+\begin{itemize}
+\item World Ocean Atlas 2009
+  \href{http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/temperature_annual_1deg.nc}{annual
+    average distribution of potential temperature}
+\item World Ocean Atlas 2009
+  \href{http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/salinity_annual_1deg.nc}{annual
+    average distribution of salinity}
+\item World Ocean Atlas 2009
+  \href{http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/phosphate_annual_1deg.nc}{annual
+    average distribution of phosphate}
+\item World Ocean Atlas
+  \href{http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NODC/.WOA09/.Masks/.basin/data.nc}{basin
+    mask} (n.b.: to avoid a confusing filename \verb+data.nc+ that
+  file is renamed to \verb+basinmask.nc+, and it is read as such in
+  the routine).
+\end{itemize}
+In addition, the routine uses the seawater equation of state \verb+swstate.m+ from the
+WHOI seawater package, which can be downloaded
+\href{http://mooring.ucsd.edu/software/matlab/doc/toolbox/ocean/swstate.html}{here},
+to calculate potential density from temperature and salinity.
+
+For modelling the iron cycle, external fluxes of iron into the ocean
+are required. In the present model, three sources of iron are taken
+into account, namely dust deposition, sediment iron release and
+hydrothermal input. The fluxes from these sources are calculated in
+\verb+integrate_dust_for_boxmodel.m+,
+\verb+calc_sediment_for_boxmodel.m+, and
+\verb+calc_hydrothermal_for_boxmodel.m+. Again, these routines require
+files that are not distributed here with the model:
+\begin{itemize}
+\item dust deposition is calculated from the deposition field by Luo
+  and Mahowald; I obtained that field by writing to Natalie
+  Mahowald. It should be easy to use other dust deposition files
+  instead, e.g. Albani et al.
+\item sediment iron fluxes are calculated from water depth, using the
+  ETOTP 2 arc-minutes global topography.
+\item hydrothermal iron fluxes are calculated from hydrothermal helium
+  fluxes, as described in Tagliabue 2010
+\end{itemize}
+
+Finally, the iron concentrations in the model are compared to values
+obtained from the GEOTRACES second intermediate data product bottle
+data, which can be downloaded from
+\href{https://www.bodc.ac.uk/data/download/asset/2135/generic/}{here}. The
+routine to read the GEOTRACES data, sort it into the model boxes, and
+calculate quantiles for the individual boxes is
+\verb+sort_fe_data_into_boxes.m+.
+
 \section{Routines to optimise parameters of the model:}
 
 \end{document}

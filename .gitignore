@@ -2,5 +2,6 @@
 data.recom
 *.log
 *.aux
+*.out
 plots/
 .DS_Store
