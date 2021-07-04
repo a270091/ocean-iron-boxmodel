@@ -151,7 +151,7 @@ if (do_plot),
 
   % read in iron data and make a plot of data with observations and model
   figure(2)
-  sort_fe_data_into_boxes;
+  plot_geotraces_idp2;
   hold on
   h = plot(conc.y(25:36,end),'kx');
   set(h,'MarkerSize',10, 'LineWidth',2);

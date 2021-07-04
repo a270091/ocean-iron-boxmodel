@@ -1,4 +1,4 @@
-\documentclass[a4paper]{scrartcl}
+\documentclass[a4paper,titlepage=false]{scrartcl}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -7,6 +7,7 @@
     filecolor=magenta,      
     urlcolor=cyan
     }
+\usepackage{natbib}
 
 \begin{document}
 
@@ -29,12 +30,26 @@ Atlantic and Indo-Pacific ocean. Boxes are assumed to be homogeneously mixed
 and the ocean circulation is prescribed as exchanges between these boxes.
 
 The model has been used to explore feedbacks in the ocean iron cycle
-connected to organic iron complexation (manuscript in
-preparation). The full model description can be found there.
+connected to organic iron complexation \citep{Voelker21}. The full
+model description can be found there.
 
 The code presented here does not only contain the core model, but
-several additional tools. It is grouped broadly into the the following
-four parts:
+several additional tools. It is grouped broadly into the four parts
+described in each of the following sections. The basic code to
+reproduce the findings in \citet{Voelker21} is described in sections 2
+and 3. This part should run without any modification of the
+code. 
+
+Sections 4 and 5 cover additional material that is not needed by the
+model, but that may be useful if some used wants to modify the model,
+e.g.\ by adding new boxes etc. It may also be interesting to persons
+who want to understand how exactly the model boxes were chosen, how
+the data was averaged etc. They contain the tools that were used to
+construct the boxes, and to average observational data in the model
+boxes, plus some that were used to optimize model parameters. The code
+described in these two sections will require some action by the user
+before it works, mostly to download the data that is used here, and to
+set the paths to this data.
 
 \section{Code to integrate the model and to analyse ligand
   feedbacks:}
@@ -99,7 +114,8 @@ directory \verb+results+ as a matlab binary file
 After running the models, or running the feedback analyses, the output
 can be plotted using the generated output in the \verb+results+
 directory. The plotting routines also print out some basic analyses of
-the model output to the screen. Four different plots are provided:
+the model output to the screen. Four different plots are provided,
+corresponding to the ones in \citet{Voelker21}:
 
 \verb+plot_po4_allmodels_bright.m+ plots modeled phosphate
 concentrations in the twelve model boxes against the average phosphate
@@ -138,9 +154,9 @@ and, in the case of surface boxes, the surface area of the boxes,
 which is done in \verb+calc_boxes_for_model.m+. The same routine also
 calculates the average phosphate concentration within the boxes from
 World Ocean Atlas 2009 data, and the total export production in each
-surface box from the estimate by Schlitzer et al.  The routine uses a
-helper function \verb+read_one_netcdf.m+ to read the netcdf files for
-these data sets.
+surface box from the estimate by Schlitzer et al.  A helper function
+\verb+read_one_netcdf.m+ is used to read the netcdf files for these
+data sets.
 
 To do so, the routine requires several data sets that are not
 distributed here with the code, but that should be easily downloadable
@@ -148,21 +164,21 @@ from the web. The required files are (names should be clickable links)
 \begin{itemize}
 \item World Ocean Atlas 2009
   \href{http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/temperature_annual_1deg.nc}{annual
-    average distribution of potential temperature}
+    average distribution of potential temperature} \citep{Locarnini10}
 \item World Ocean Atlas 2009
   \href{http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/salinity_annual_1deg.nc}{annual
-    average distribution of salinity}
+    average distribution of salinity} \citep{Antonov10} 
 \item World Ocean Atlas 2009
   \href{http://data.nodc.noaa.gov/thredds/fileServer/woa/WOA09/NetCDFdata/phosphate_annual_1deg.nc}{annual
-    average distribution of phosphate}
+    average distribution of phosphate} \citep{Garcia10}
 \item World Ocean Atlas
   \href{http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NODC/.WOA09/.Masks/.basin/data.nc}{basin
     mask} (n.b.: to avoid a confusing filename \verb+data.nc+ that
   file is renamed to \verb+basinmask.nc+, and it is read as such in
   the routine).
 \end{itemize}
-In addition, the routine uses the seawater equation of state \verb+swstate.m+ from the
-WHOI seawater package, which can be downloaded
+In addition, the routine uses the seawater equation of state
+\verb+swstate.m+ from the WHOI seawater package, which can be downloaded
 \href{http://mooring.ucsd.edu/software/matlab/doc/toolbox/ocean/swstate.html}{here},
 to calculate potential density from temperature and salinity.
 
@@ -176,24 +192,29 @@ hydrothermal input. The fluxes from these sources are calculated in
 files that are not distributed here with the model:
 \begin{itemize}
 \item dust deposition is calculated from the deposition field by Luo
-  and Mahowald; I obtained that field by writing to Natalie
+  and Mahowald \citep{Mahowald03}; I obtained that field by writing to Natalie
   Mahowald. It should be easy to use other dust deposition files
-  instead, e.g. Albani et al.
+  instead, e.g.\ from \citet{Albani16}.
 \item sediment iron fluxes are calculated from water depth, using the
-  ETOTP 2 arc-minutes global topography.
-\item hydrothermal iron fluxes are calculated from hydrothermal helium
-  fluxes, as described in Tagliabue 2010
+  \href{https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO2/ETOPO2v2-2006/ETOPO2v2g/netCDF/ETOPO2v2g_f4_netCDF.zip}{ETOPO 2 arc-minutes global topography} \citep{ETOPO2}.
+\item hydrothermal iron fluxes are calculated from OCMIP2 \href{http://ocmip5.ipsl.jussieu.fr/OCMIP/phase2/simulations/Helium/boundcond/src_helium.nc}{hydrothermal helium
+  fluxes}, as described in \citet{Tagliabue10}
 \end{itemize}
 
 Finally, the iron concentrations in the model are compared to values
 obtained from the GEOTRACES second intermediate data product bottle
-data, which can be downloaded from
+data \citep{Schlitzer18}, which can be downloaded from
 \href{https://www.bodc.ac.uk/data/download/asset/2135/generic/}{here}. The
 routine to read the GEOTRACES data, sort it into the model boxes, and
 calculate quantiles for the individual boxes is
 \verb+sort_fe_data_into_boxes.m+.
 
 \section{Routines to optimise parameters of the model:}
+
+\bibliography{modeldescription}
+\bibliographystyle{agufull08}
+
+
 
 \end{document}
 

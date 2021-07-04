@@ -235,8 +235,17 @@ for k=1:12
         k,ndata,fe1q(k),femedian(k),fe3q(k));
 end
 
+% finally, save the output as an ASCII-file
+fname = 'results/geotraces_idp2_dfe_data_boxed.dat';
+fid = fopen(fname,'w');
+for k=1:12
+    fprintf(fid,'%2i %6i %8.4f %8.4f %8.4f %8.4f %8.4f\n',...
+            k,nboxdata(k),femin(k),fe1q(k),femedian(k),fe3q(k),femax(k));
+end
+fclose(fid);
+
 % and now do a plot
-myboxplot(femedian,fe1q,fe3q,femin,femax)
+% myboxplot(femedian,fe1q,fe3q,femin,femax)
 
 
 

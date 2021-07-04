@@ -3,5 +3,7 @@ data.recom
 *.log
 *.aux
 *.out
+*.blg
+*.bbl
 plots/
 .DS_Store

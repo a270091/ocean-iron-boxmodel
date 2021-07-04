@@ -57,7 +57,7 @@ boxmodel_init_params
 
 figure(1)
 clf
-sort_fe_data_into_boxes;
+plot_geotraces_idp2;
 
 % whitebg([0.9 0.9 0.9]);
 

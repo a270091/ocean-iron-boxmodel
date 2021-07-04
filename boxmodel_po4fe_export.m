@@ -51,7 +51,7 @@ set(gca,'FontSize',12,'XLim',[0.5,12.5],'YLim',[0 3.5]);
 
 % read in iron data and make a plot of data with observations and model
 figure
-sort_fe_data_into_boxes;
+plot_geotraces_idp2;
 hold on
 h = plot(conc.y(13:24,end),'kx');
 set(h,'MarkerSize',10, 'LineWidth',2);
