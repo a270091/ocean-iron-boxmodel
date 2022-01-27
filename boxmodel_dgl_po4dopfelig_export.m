@@ -1,4 +1,4 @@
-function dydt  = boxmodel_dgl_po4dopfe_export(~,y)
+function dydt  = boxmodel_dgl_po4dopfelig_export(~,y)
 % function dydt  = boxmodel_dgl(~,y)
 %
 % definition of the rhs of the differential equations of a 12-box
@@ -74,8 +74,14 @@ rhs.scav   = -kscav*feprime;
 rhs.dust   = sol*dust./volume;
 rhs.hydro  = hydfac*hydro;
 rhs.sedfe  = sedfac*sedfe;
+rhs.lig1   = rlig2p*remin;
+rhs.lig2   = rlig2p2*uptake;
+rhs.lig3   = -ligremin;
 
 % in the end, glue all rates of change into one long vector
 dydt = [dpo4dt; ddopdt; ddfedt; dligdt];
 
 return
+
+end
+

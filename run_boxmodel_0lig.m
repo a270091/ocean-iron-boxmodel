@@ -1,20 +1,37 @@
-% to test out, first a model for phosphate only
-
 % global fields for analysis
 global params
 global rhs feprime export
 
+%-----------------------------
 % initialize model parameters
-boxmodel_init_params()
+%-----------------------------
 
-% initial PO4 distribution
+modelrun = '0L';         % 0L or generic (makes no difference, though)
+if strcmp(modelrun,'0L')
+    % settings corresponding to run 0L in Frontiers paper
+    fprintf('Parameter setting: 0L\n');
+    params = load('results/parameters_0l.mat');
+else
+    % generic setting of parameters
+    fprintf('Generic parameter setting\n');
+    boxmodel_init_params()
+end
+
+%-----------------------------
+% initialize model concentrations
+%-----------------------------
+
+% initial PO4 distribution from WOA
 po4_init = params.po4init;
 dop_init = zeros(size(po4_init));
 fe_init = 0.6 + zeros(size(po4_init));
 conc_init = [po4_init;dop_init;fe_init];
 
-% integrate
-tspan = (0:50:3000);
+%-----------------------------
+% integrate model into steady state
+%-----------------------------
+ 
+tspan = (0:50:5000);
 conc = ode23s(@boxmodel_dgl_po4dopfe_export, tspan, conc_init);
 
 % plots of time development
@@ -63,18 +80,73 @@ fprintf('Sediment iron input: %8.2e mol/yr \n',sed_fe_sol);
 fprintf('Hydrothermal iron input: %8.2e mol/yr \n',hyd_fe_sol);
 fprintf('Residence time: %6.2f yr \n',residence_time);
 
-% save final concentrations as a table
-% (for later plotting of equilibrium ligands)
-finalstate = conc.y(:,end);
-fid = fopen('equil_po4dopfe_export.dat','w');
-for k=1:12
-  fprintf(fid,'%8.4f %8.3f %8.4f\n', finalstate(k),...
-	 finalstate(k+12),finalstate(k+24));
+ifetable=0;
+if (ifetable==1)
+    % write out a table of iron sources and sinks for the final steady state
+    finalstate = conc.y(:,end);
+    dcdt = boxmodel_dgl_po4dopfelig_export(0,finalstate);
+    % calculate fluxes (in 10^6 mol/yr) from rhs (calculated in the DGL field)
+    dust  = rhs.dust  .* params.volume * 1.0e-12;
+    sedfe = rhs.sedfe .* params.volume * 1.0e-12;
+    hydro = rhs.hydro .* params.volume * 1.0e-12;
+    bio   = (rhs.uptake + rhs.remin) .* params.volume * 1.0e-12;
+    scav  = rhs.scav .* params.volume * 1.0e-12;
+    fprintf('\niron fluxes: \n')
+    for k=1:12
+        fprintf('%7.1f %7.1f %7.1f %7.1f %7.1f\n',dust(k),sedfe(k),...
+                hydro(k),bio(k),scav(k)) 
+    end
 end
-fclose(fid);
+
+iprint=0;
+if (iprint==1)
+    % save final concentrations as a table
+    % (for later plotting of equilibrium ligands)
+    finalstate = conc.y(:,end);
+    fid = fopen('equil_po4dopfe_export.dat','w');
+    for k=1:12
+        fprintf(fid,'%8.4f %8.3f %8.4f\n', finalstate(k),...
+                finalstate(k+12),finalstate(k+24));
+    end
+    fclose(fid);
+end
+
+% calculate some measures of goodness of model fit to data
+ifit=1;
+if (ifit==1)
+    % model state
+    finalstate = conc.y(:,end);
+    po4mod = finalstate(1:12);
+    femod  = finalstate(25:36);
+    % observational data
+    po4obs = params.po4init;
+    read_geotraces_idp2;
+    feobs  = femedian;
+    % weight
+    weight = ones(size(po4obs));
+    [R,E,B,sf,sr] = calculate_taylor(po4obs,po4mod,weight);
+    corr_po4 = R;
+    rmse_po4 = E;
+    bias_po4 = B;
+    fprintf('\nModel assessment, PO4: \n');
+    fprintf('  Corr: %f\n',corr_po4);
+    fprintf('  RMSE: %f\n',rmse_po4);
+    fprintf('  Bias: %f\n',bias_po4);
+    % calculate for iron data
+    [R,E,B,sf,sr] = calculate_taylor(feobs,femod,weight);
+    corr_dfe = R;
+    rmse_dfe = E;
+    bias_dfe = B;
+    mae_dfe  = mean( abs( feobs - femod ) );
+    fprintf('\nModel assessment, Fe: \n');
+    fprintf('  Corr: %f\n',corr_dfe);
+    fprintf('  RMSE: %f\n',rmse_dfe);
+    fprintf('  Bias: %f\n',bias_dfe);
+    fprintf('  MAE:  %f\n',mae_dfe);
+end
 
 % save parameter values as a matlab-file
-save('parameters_0l.mat','-struct','params');
+% save('parameters_0l.mat','-struct','params');
 
 do_plot=0;
 

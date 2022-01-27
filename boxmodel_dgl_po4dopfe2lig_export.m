@@ -98,8 +98,14 @@ rhs.scav   = -kscav*feprime;
 rhs.dust   = sol*dust./volume;
 rhs.hydro  = hydfac*hydro;
 rhs.sedfe  = sedfac*sedfe;
+rhs.lig1   = rlig2p*remin;
+rhs.lig2   = rlig2p2*uptake;
+rhs.lig3   = -ligremin;
+rhs.sid1   = sidprod;
+rhs.sid2   = -sidremin*sid;
 
 % in the end, glue all rates of change into one long vector
 dydt = [dpo4dt; ddopdt; ddfedt; dligdt; dsiddt];
 
 return
+end

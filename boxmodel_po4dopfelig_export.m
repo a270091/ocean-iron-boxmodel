@@ -1,5 +1,6 @@
 % to test out, first a model for phosphate only
 
+tic;
 % global fields for analysis
 global params
 global rhs feprime export
@@ -17,6 +18,8 @@ conc_init = [po4_init;dop_init;fe_init;lig_init];
 % integrate
 tspan = (0:50:5000);
 conc = ode23s(@boxmodel_dgl_po4dopfelig_export, tspan, conc_init);
+
+toc;
 
 % plots of time development
 
